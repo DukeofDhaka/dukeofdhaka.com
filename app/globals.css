@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #07070b;
+  --color-ink-soft: #0e0e15;
+  --color-paper: #f2ede4;
+  --color-paper-dim: #b8b2a6;
+  --color-gold: #d9a94e;
+  --color-gold-bright: #edc87c;
+  --color-bd-green: #0a6847;
+  --color-bd-red: #d43737;
+
+  --font-display: var(--font-fraunces), "Georgia", serif;
+  --font-sans: var(--font-grotesk), system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Thin gold scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3325;
+  border-radius: 3px;
+}
+
+/* Film-grain overlay for the cinematic feel */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(3%, -15%); }
+  50% { transform: translate(12%, 9%); }
+  70% { transform: translate(9%, 4%); }
+  90% { transform: translate(-1%, 7%); }
+}
+
+/* Equalizer bars in the now-playing chip */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+.eq span {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--color-gold);
+  animation: eq-bounce 1s ease-in-out infinite;
+}
+.eq span:nth-child(1) { animation-delay: 0s; height: 60%; }
+.eq span:nth-child(2) { animation-delay: 0.25s; height: 100%; }
+.eq span:nth-child(3) { animation-delay: 0.5s; height: 40%; }
+.eq.paused span {
+  animation-play-state: paused;
+  height: 25%;
+}
+
+@keyframes eq-bounce {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px rgba(242, 237, 228, 0.14);
+  color: transparent;
+}
