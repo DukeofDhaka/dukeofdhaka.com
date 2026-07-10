@@ -29,7 +29,7 @@ Stack: Next.js (App Router, static export) · TypeScript · Tailwind CSS v4 · F
 ## 🚀 Go-live checklist (one-time setup)
 
 The site auto-deploys to GitHub Pages on every push to `main`
-(`.github/workflows/deploy.yml`). To put it on **dukeofdhaka.com**:
+(`.github/workflows/nextjs.yml`). To put it on **dukeofdhaka.com**:
 
 1. **Merge this branch into `main`.**
 2. **Enable Pages:** repo **Settings → Pages → Build and deployment → Source:
