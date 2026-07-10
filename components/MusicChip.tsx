@@ -24,7 +24,7 @@ export default function MusicChip({
         <span />
         <span />
       </span>
-      <span className="hidden text-xs text-paper-dim sm:block">
+      <span className="hidden text-[11px] uppercase tracking-[0.15em] text-paper-dim sm:block">
         {playing ? "Now playing — " : "Paused — "}
         <span className="text-paper">
           {site.music.title} · {site.music.artist}

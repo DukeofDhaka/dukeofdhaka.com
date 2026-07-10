@@ -1,75 +1,96 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { site } from "@/lib/content";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { AnimatePresence, motion } from "framer-motion";
+import { site, hero } from "@/lib/content";
+
+const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
+
+function RoleRotator() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI((v) => (v + 1) % hero.roles.length), 2600);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <span className="relative inline-block h-[1.4em] overflow-hidden align-bottom">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={i}
+          initial={{ y: "100%" }}
+          animate={{ y: 0 }}
+          exit={{ y: "-100%" }}
+          transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
+          className="inline-block text-gold"
+        >
+          {hero.roles[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
 
 export default function Hero() {
   return (
-    <header className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6">
-      {/* backdrop glow + watermark */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 40% at 30% 35%, rgba(217,169,78,0.10), transparent 70%), radial-gradient(ellipse 40% 35% at 80% 75%, rgba(10,104,71,0.12), transparent 70%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="font-display pointer-events-none absolute -right-8 top-1/2 hidden -translate-y-1/2 select-none text-[22rem] leading-none text-outline lg:block"
-      >
-        ঢাকা
+    <header className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:px-10">
+      {/* interactive globe backdrop: Dhaka → Montréal */}
+      <div className="absolute inset-y-0 right-0 w-full opacity-60 md:w-[58%] md:opacity-90">
+        <Globe />
       </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink via-ink/70 to-transparent"
+      />
 
-      <div className="mx-auto w-full max-w-5xl">
+      <div className="relative mx-auto w-full max-w-6xl">
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7 }}
-          className="mb-5 text-sm tracking-[0.3em] text-gold uppercase"
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="mb-6 text-xs uppercase tracking-[0.35em] text-paper-dim"
         >
-          দ্য ডিউক অফ ঢাকা — the Duke of Dhaka
+          দ্য ডিউক অফ ঢাকা — Montréal, Canada
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 22 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="font-display text-6xl leading-[0.95] text-paper sm:text-8xl"
+          transition={{ delay: 0.3, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="display-huge text-[15vw] text-paper md:text-[10.5vw]"
         >
           Tahsin
           <br />
-          <span className="italic text-gold">Fatin</span>
+          <span className="text-outline">Fatin</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="mt-8 max-w-xl text-lg leading-relaxed text-paper-dim"
+          transition={{ delay: 0.55, duration: 0.7 }}
+          className="font-display mt-8 text-xl font-bold uppercase tracking-tight text-paper sm:text-3xl"
         >
-          {site.tagline}
+          <RoleRotator />
         </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65, duration: 0.8 }}
-          className="mt-4 max-w-xl text-lg leading-relaxed text-paper"
+          transition={{ delay: 0.7, duration: 0.7 }}
+          className="mt-5 max-w-lg leading-relaxed text-paper-dim"
         >
-          {site.heroLine}
+          {site.tagline} {site.heroLine}
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.85, duration: 0.7 }}
+          transition={{ delay: 0.85, duration: 0.6 }}
           className="mt-10 flex flex-wrap items-center gap-4"
         >
           <a
             href="#works"
-            className="rounded-full bg-gold px-7 py-3.5 text-sm font-medium tracking-wide text-ink transition-transform hover:scale-105"
+            className="font-display rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-wide text-ink transition-transform hover:scale-105"
           >
             Selected works ↓
           </a>
@@ -77,7 +98,7 @@ export default function Hero() {
             href={site.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-paper/25 px-7 py-3.5 text-sm tracking-wide text-paper transition-colors hover:border-gold hover:text-gold"
+            className="font-display rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:border-gold hover:text-gold"
           >
             GitHub ↗
           </a>
@@ -88,15 +109,15 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-paper-dim"
       >
-        <motion.div
+        <motion.span
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          className="text-paper-dim"
+          className="inline-block"
         >
           ↓
-        </motion.div>
+        </motion.span>
       </motion.div>
     </header>
   );

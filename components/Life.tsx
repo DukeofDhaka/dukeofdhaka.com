@@ -7,27 +7,29 @@ import { life } from "@/lib/content";
 export default function Life() {
   return (
     <Section id="life" index="05 — Beyond the résumé" title="Life, lately">
-      <div className="grid gap-6 sm:grid-cols-2">
+      <div className="grid gap-px overflow-hidden rounded-2xl border border-paper/15 bg-paper/15 sm:grid-cols-2">
         {life.map((item, i) => (
           <motion.div
             key={item.title}
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, delay: i * 0.08 }}
-            className="rounded-2xl border border-paper/10 bg-ink-soft p-7"
+            className="bg-ink p-8 transition-colors hover:bg-ink-soft sm:p-10"
           >
-            <div className="mb-4 text-3xl" aria-hidden>
+            <div className="mb-5 text-4xl" aria-hidden>
               {item.emoji}
             </div>
-            <h3 className="font-display text-xl text-paper">{item.title}</h3>
+            <h3 className="font-display text-xl font-bold uppercase tracking-tight text-paper">
+              {item.title}
+            </h3>
             <p className="mt-3 leading-relaxed text-paper-dim">{item.text}</p>
             {item.link && (
               <a
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-block text-sm text-gold underline-offset-4 hover:underline"
+                className="mt-5 inline-block text-sm uppercase tracking-wide text-gold underline-offset-4 hover:underline"
               >
                 {item.linkLabel} ↗
               </a>

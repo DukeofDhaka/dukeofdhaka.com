@@ -28,6 +28,24 @@ export const site = {
   },
 };
 
+export const hero = {
+  roles: [
+    "analytics grad @ McGill",
+    "ML systems builder",
+    "creator of DeshRide",
+    "data storyteller",
+  ],
+  marquee: [
+    "Analytics",
+    "Machine Learning",
+    "ঢাকা → মন্ট্রিয়ল",
+    "Product",
+    "Python",
+    "TypeScript",
+    "Duke of Dhaka",
+  ],
+};
+
 export const about = {
   paragraphs: [
     "I grew up in Dhaka — a city of twenty million people, infinite traffic, and better food than wherever you're reading this from. These days I'm in Montréal, doing a Master of Management in Analytics at McGill's Desautels Faculty of Management.",

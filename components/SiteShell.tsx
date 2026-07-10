@@ -2,9 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { site } from "@/lib/content";
+import Lenis from "lenis";
+import { site, hero } from "@/lib/content";
 import Splash from "@/components/Splash";
 import MusicChip from "@/components/MusicChip";
+import Cursor from "@/components/Cursor";
+import Marquee from "@/components/Marquee";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Timeline from "@/components/Timeline";
@@ -36,6 +39,22 @@ export default function SiteShell() {
   const [playing, setPlaying] = useState(false);
   const playerRef = useRef<YTPlayer | null>(null);
   const pendingPlay = useRef(false);
+
+  // Lenis smooth scrolling once the visitor is in
+  useEffect(() => {
+    if (!entered) return;
+    const lenis = new Lenis({ lerp: 0.1 });
+    let raf = 0;
+    const loop = (time: number) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+    };
+  }, [entered]);
 
   useEffect(() => {
     const init = () => {
@@ -117,6 +136,8 @@ export default function SiteShell() {
 
   return (
     <>
+      <Cursor />
+
       {/* Offscreen YouTube player — audio only. Kept in the DOM (not display:none)
           so the IFrame API can control it. */}
       <div
@@ -132,9 +153,11 @@ export default function SiteShell() {
 
       <main className={entered ? "" : "h-screen overflow-hidden"} aria-hidden={!entered}>
         <Hero />
+        <Marquee items={hero.marquee} />
         <About />
         <Timeline />
         <Projects />
+        <Marquee items={[...hero.marquee].reverse()} />
         <Skills />
         <Life />
         <Footer />

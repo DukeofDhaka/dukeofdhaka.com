@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Fraunces, Space_Grotesk } from "next/font/google";
+import { Syne, Geist } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  axes: ["opsz"],
+  variable: "--font-syne",
 });
 
-const grotesk = Space_Grotesk({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-grotesk",
+  variable: "--font-geist",
 });
 
 export const metadata: Metadata = {
@@ -32,8 +31,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${grotesk.variable}`}>
-      <body className="grain">{children}</body>
+    <html lang="en" className={`${syne.variable} ${geist.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
