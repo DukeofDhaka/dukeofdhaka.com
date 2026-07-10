@@ -66,7 +66,7 @@ export default function About() {
           <dl className="space-y-7">
             {about.facts.map((f) => (
               <div key={f.label}>
-                <dt className="text-[11px] uppercase tracking-[0.25em] text-gold">
+                <dt className="text-[11px] uppercase tracking-[0.25em] text-accent">
                   {f.label}
                 </dt>
                 <dd className="font-display mt-1.5 font-bold uppercase tracking-tight text-paper">

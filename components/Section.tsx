@@ -23,7 +23,7 @@ export default function Section({
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        <p className="mb-4 text-xs uppercase tracking-[0.35em] text-gold">{index}</p>
+        <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">{index}</p>
         <h2 className="display-huge mb-14 text-5xl text-paper sm:text-7xl">
           {title}
         </h2>

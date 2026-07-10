@@ -47,11 +47,11 @@ function GlobeScene() {
     const points = curve.getPoints(ARC_POINTS - 1);
     const base = new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(points),
-      new THREE.LineBasicMaterial({ color: "#edc87c", transparent: true, opacity: 0.25 })
+      new THREE.LineBasicMaterial({ color: "#ff5d6e", transparent: true, opacity: 0.25 })
     );
     const beam = new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(points),
-      new THREE.LineBasicMaterial({ color: "#edc87c", transparent: true, opacity: 0.95 })
+      new THREE.LineBasicMaterial({ color: "#ff5d6e", transparent: true, opacity: 0.95 })
     );
     beam.geometry.setDrawRange(0, 0);
     return { arcBase: base, arcBeam: beam };
@@ -93,12 +93,12 @@ function GlobeScene() {
       {[DHAKA, MONTREAL].map((v, i) => (
         <mesh key={i} position={v}>
           <sphereGeometry args={[0.022, 16, 16]} />
-          <meshBasicMaterial color="#d9a94e" />
+          <meshBasicMaterial color="#f42a41" />
         </mesh>
       ))}
       <mesh ref={pulse} position={DHAKA}>
         <sphereGeometry args={[0.035, 16, 16]} />
-        <meshBasicMaterial color="#d9a94e" transparent opacity={0.3} />
+        <meshBasicMaterial color="#f42a41" transparent opacity={0.3} />
       </mesh>
     </group>
   );

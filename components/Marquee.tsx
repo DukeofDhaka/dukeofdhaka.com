@@ -10,7 +10,7 @@ export default function Marquee({ items }: { items: string[] }) {
           className="font-display inline-flex items-center text-2xl font-bold uppercase tracking-tight text-paper-dim/70 sm:text-3xl"
         >
           <span className="px-6">{item}</span>
-          <span className="text-gold" aria-hidden>
+          <span className="text-accent" aria-hidden>
             ✦
           </span>
         </span>

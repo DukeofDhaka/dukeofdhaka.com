@@ -7,6 +7,7 @@ import { site, hero } from "@/lib/content";
 import Splash from "@/components/Splash";
 import MusicChip from "@/components/MusicChip";
 import Cursor from "@/components/Cursor";
+import Menu from "@/components/Menu";
 import Marquee from "@/components/Marquee";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -34,6 +35,25 @@ declare global {
   }
 }
 
+/** Sections are sticky full-height cards; each one slides up over the last. */
+function Panel({
+  children,
+  first = false,
+}: {
+  children: React.ReactNode;
+  first?: boolean;
+}) {
+  return (
+    <div
+      className={`sticky top-0 min-h-screen bg-ink ${
+        first ? "" : "rounded-t-[2.5rem] border-t border-paper/10 shadow-[0_-20px_60px_rgba(0,0,0,0.6)]"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function SiteShell() {
   const [entered, setEntered] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -44,6 +64,7 @@ export default function SiteShell() {
   useEffect(() => {
     if (!entered) return;
     const lenis = new Lenis({ lerp: 0.1 });
+    window.__lenis = lenis;
     let raf = 0;
     const loop = (time: number) => {
       lenis.raf(time);
@@ -52,6 +73,7 @@ export default function SiteShell() {
     raf = requestAnimationFrame(loop);
     return () => {
       cancelAnimationFrame(raf);
+      window.__lenis = undefined;
       lenis.destroy();
     };
   }, [entered]);
@@ -151,16 +173,36 @@ export default function SiteShell() {
         {!entered && <Splash key="splash" onEnter={handleEnter} />}
       </AnimatePresence>
 
-      <main className={entered ? "" : "h-screen overflow-hidden"} aria-hidden={!entered}>
-        <Hero />
-        <Marquee items={hero.marquee} />
-        <About />
-        <Timeline />
-        <Projects />
-        <Marquee items={[...hero.marquee].reverse()} />
-        <Skills />
-        <Life />
-        <Footer />
+      {entered && <Menu />}
+
+      <main
+        id="top"
+        className={entered ? "" : "h-screen overflow-hidden"}
+        aria-hidden={!entered}
+      >
+        <Panel first>
+          <Hero />
+        </Panel>
+        <Panel>
+          <Marquee items={hero.marquee} />
+          <About />
+        </Panel>
+        <Panel>
+          <Timeline />
+        </Panel>
+        <Panel>
+          <Projects />
+        </Panel>
+        <Panel>
+          <Marquee items={[...hero.marquee].reverse()} />
+          <Skills />
+        </Panel>
+        <Panel>
+          <Life />
+        </Panel>
+        <Panel>
+          <Footer />
+        </Panel>
       </main>
 
       {entered && <MusicChip playing={playing} onToggle={toggleMusic} />}

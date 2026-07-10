@@ -5,12 +5,12 @@
   --color-ink-soft: #0d0d0f;
   --color-paper: #ece7de;
   --color-paper-dim: #8f8a81;
-  --color-gold: #d9a94e;
-  --color-gold-bright: #edc87c;
+  --color-accent: #f42a41;
+  --color-accent-bright: #ff5d6e;
   --color-bd-green: #0a6847;
   --color-bd-red: #d43737;
 
-  --font-display: var(--font-syne), system-ui, sans-serif;
+  --font-display: var(--font-clash), system-ui, sans-serif;
   --font-sans: var(--font-geist), system-ui, -apple-system, sans-serif;
 }
 
@@ -27,7 +27,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-gold);
+  background: var(--color-accent);
   color: var(--color-ink);
 }
 
@@ -38,7 +38,7 @@ body {
   background: var(--color-ink);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2c2820;
+  background: #2a1216;
   border-radius: 3px;
 }
 
@@ -57,18 +57,18 @@ body {
   .cursor-dot {
     width: 8px;
     height: 8px;
-    background: var(--color-gold);
+    background: var(--color-accent);
   }
   .cursor-ring {
     width: 36px;
     height: 36px;
-    border: 1px solid rgba(217, 169, 78, 0.55);
+    border: 1px solid rgba(244, 42, 65, 0.55);
     transition: width 0.25s ease, height 0.25s ease, background 0.25s ease;
   }
   .cursor-ring.is-hover {
     width: 64px;
     height: 64px;
-    background: rgba(217, 169, 78, 0.12);
+    background: rgba(244, 42, 65, 0.12);
   }
 }
 @media (hover: none), (pointer: coarse) {
@@ -104,7 +104,7 @@ body {
 .eq span {
   width: 3px;
   border-radius: 1px;
-  background: var(--color-gold);
+  background: var(--color-accent);
   animation: eq-bounce 1s ease-in-out infinite;
 }
 .eq span:nth-child(1) { animation-delay: 0s; height: 60%; }
@@ -127,7 +127,7 @@ body {
 /* big display headline utility */
 .display-huge {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: -0.02em;
   line-height: 0.92;

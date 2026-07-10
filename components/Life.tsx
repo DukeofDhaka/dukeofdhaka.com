@@ -29,7 +29,7 @@ export default function Life() {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-block text-sm uppercase tracking-wide text-gold underline-offset-4 hover:underline"
+                className="mt-5 inline-block text-sm uppercase tracking-wide text-accent underline-offset-4 hover:underline"
               >
                 {item.linkLabel} ↗
               </a>

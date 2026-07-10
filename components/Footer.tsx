@@ -5,9 +5,9 @@ import { site } from "@/lib/content";
 
 export default function Footer() {
   return (
-    <footer className="px-6 pb-10 pt-28 sm:px-10">
+    <footer id="contact" className="flex min-h-screen flex-col justify-center px-6 pb-10 pt-28 sm:px-10">
       <div className="mx-auto max-w-6xl">
-        <p className="mb-4 text-xs uppercase tracking-[0.35em] text-gold">
+        <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">
           06 — Contact
         </p>
         <motion.a
@@ -16,9 +16,9 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="display-huge block text-[11vw] text-paper transition-colors hover:text-gold sm:text-[7.5vw]"
+          className="display-huge block text-[11vw] text-paper transition-colors hover:text-accent sm:text-[7.5vw]"
         >
-          Let&apos;s talk<span className="text-gold">.</span>
+          Let&apos;s talk<span className="text-accent">.</span>
         </motion.a>
 
         <motion.p
@@ -35,7 +35,7 @@ export default function Footer() {
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <a
             href={`mailto:${site.email}`}
-            className="font-display rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-wide text-ink transition-transform hover:scale-105"
+            className="font-display rounded-full bg-accent px-8 py-4 text-sm font-bold uppercase tracking-wide text-ink transition-transform hover:scale-105"
           >
             {site.email}
           </a>
@@ -43,7 +43,7 @@ export default function Footer() {
             href={site.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-display rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:border-gold hover:text-gold"
+            className="font-display rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:border-accent hover:text-accent"
           >
             GitHub ↗
           </a>
@@ -52,7 +52,7 @@ export default function Footer() {
               href={site.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:border-gold hover:text-gold"
+              className="font-display rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:border-accent hover:text-accent"
             >
               LinkedIn ↗
             </a>

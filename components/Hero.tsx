@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
+import Magnetic from "@/components/Magnetic";
+import HoverText from "@/components/HoverText";
 import { site, hero } from "@/lib/content";
 
-const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
+const Portrait = dynamic(() => import("@/components/Portrait"), { ssr: false });
 
 function RoleRotator() {
   const [i, setI] = useState(0);
@@ -14,7 +16,7 @@ function RoleRotator() {
     return () => clearInterval(id);
   }, []);
   return (
-    <span className="relative inline-block h-[1.4em] overflow-hidden align-bottom">
+    <span className="relative inline-block h-[1.5em] overflow-hidden align-bottom leading-[1.4]">
       <AnimatePresence mode="wait">
         <motion.span
           key={i}
@@ -22,7 +24,7 @@ function RoleRotator() {
           animate={{ y: 0 }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
-          className="inline-block text-gold"
+          className="inline-block text-accent"
         >
           {hero.roles[i]}
         </motion.span>
@@ -34,16 +36,16 @@ function RoleRotator() {
 export default function Hero() {
   return (
     <header className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:px-10">
-      {/* interactive globe backdrop: Dhaka → Montréal */}
-      <div className="absolute inset-y-0 right-0 w-full opacity-60 md:w-[58%] md:opacity-90">
-        <Globe />
+      {/* interactive particle portrait (appears once public/portrait.jpg exists) */}
+      <div className="absolute inset-y-0 right-0 hidden w-[52%] md:block">
+        <Portrait />
       </div>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink via-ink/70 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent"
       />
 
-      <div className="relative mx-auto w-full max-w-6xl">
+      <div className="pointer-events-none relative z-10 mx-auto w-full max-w-6xl">
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,22 +88,26 @@ export default function Hero() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.85, duration: 0.6 }}
-          className="mt-10 flex flex-wrap items-center gap-4"
+          className="pointer-events-auto mt-10 flex flex-wrap items-center gap-4"
         >
-          <a
-            href="#works"
-            className="font-display rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-wide text-ink transition-transform hover:scale-105"
-          >
-            Selected works ↓
-          </a>
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-display rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:border-gold hover:text-gold"
-          >
-            GitHub ↗
-          </a>
+          <Magnetic>
+            <a
+              href="#works"
+              className="group font-display block rounded-full bg-accent px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper"
+            >
+              Selected works ↓
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group font-display block rounded-full border border-paper/25 px-8 py-4 text-sm font-bold uppercase tracking-wide text-paper"
+            >
+              <HoverText text="GitHub ↗" />
+            </a>
+          </Magnetic>
         </motion.div>
       </div>
 

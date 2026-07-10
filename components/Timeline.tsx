@@ -1,13 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Section from "@/components/Section";
 import { timeline } from "@/lib/content";
 
+const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
+
 export default function Timeline() {
   return (
-    <Section id="journey" index="02 — Journey" title="Where I've been">
-      <ol>
+    <div className="relative">
+      {/* Dhaka → Montréal globe drifting behind the timeline */}
+      <div className="absolute inset-y-0 right-0 hidden w-[45%] opacity-50 lg:block">
+        <Globe />
+      </div>
+      <Section id="journey" index="02 — Journey" title="Where I've been">
+        <ol className="relative z-10">
         {timeline.map((entry, i) => (
           <motion.li
             key={i}
@@ -17,7 +25,7 @@ export default function Timeline() {
             transition={{ duration: 0.55, delay: i * 0.08 }}
             className="grid gap-2 border-t border-paper/15 py-9 last:border-b sm:grid-cols-[200px_1fr]"
           >
-            <p className="text-xs uppercase tracking-[0.25em] text-gold">
+            <p className="text-xs uppercase tracking-[0.25em] text-accent">
               {entry.period}
             </p>
             <div>
@@ -37,7 +45,8 @@ export default function Timeline() {
             </div>
           </motion.li>
         ))}
-      </ol>
-    </Section>
+        </ol>
+      </Section>
+    </div>
   );
 }

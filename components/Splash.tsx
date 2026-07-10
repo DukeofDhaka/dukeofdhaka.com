@@ -44,7 +44,7 @@ export default function Splash({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mb-4 text-xs uppercase tracking-[0.35em] text-gold"
+          className="mb-4 text-xs uppercase tracking-[0.35em] text-accent"
         >
           ঢাকা থেকে মন্ট্রিয়ল
         </motion.p>
@@ -52,7 +52,7 @@ export default function Splash({
         <h1 className="display-huge text-[13vw] text-paper sm:text-[9vw]">
           Duke of
           <br />
-          <span className="text-gold">Dhaka</span>
+          <span className="text-accent">Dhaka</span>
         </h1>
 
         <div className="mt-10 h-14">
@@ -64,7 +64,7 @@ export default function Splash({
             >
               <button
                 onClick={() => onEnter(true)}
-                className="font-display rounded-full border border-gold px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-gold transition-colors hover:bg-gold hover:text-ink"
+                className="font-display rounded-full border border-accent px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-accent transition-colors hover:bg-accent hover:text-ink"
               >
                 ▶ Enter · sound on
               </button>
@@ -89,7 +89,7 @@ export default function Splash({
         </p>
         <span className="display-huge text-6xl text-paper/90 tabular-nums sm:text-8xl">
           {count}
-          <span className="text-gold">%</span>
+          <span className="text-accent">%</span>
         </span>
       </div>
     </motion.div>

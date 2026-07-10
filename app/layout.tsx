@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
-import { Syne, Geist } from "next/font/google";
+import { Geist } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const syne = Syne({
-  subsets: ["latin"],
-  variable: "--font-syne",
+/* Clash Display by Indian Type Foundry, via Fontshare (ITF Free Font License —
+   free for personal & commercial use, self-hosted here). */
+const clash = localFont({
+  src: [
+    { path: "./fonts/ClashDisplay-Medium.woff2", weight: "500" },
+    { path: "./fonts/ClashDisplay-Semibold.woff2", weight: "600" },
+    { path: "./fonts/ClashDisplay-Bold.woff2", weight: "700" },
+  ],
+  variable: "--font-clash",
 });
 
 const geist = Geist({
@@ -31,7 +38,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${geist.variable}`}>
+    <html lang="en" className={`${clash.variable} ${geist.variable}`}>
       <body>{children}</body>
     </html>
   );

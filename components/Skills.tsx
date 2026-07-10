@@ -17,7 +17,7 @@ export default function Skills() {
             transition={{ duration: 0.6, delay: i * 0.1 }}
             className="border-t border-paper/15 py-8"
           >
-            <h3 className="font-display mb-6 text-sm font-bold uppercase tracking-[0.25em] text-gold">
+            <h3 className="font-display mb-6 text-sm font-bold uppercase tracking-[0.25em] text-accent">
               {group.group}
             </h3>
             <ul className="space-y-3">
