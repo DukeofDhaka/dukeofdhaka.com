@@ -6,7 +6,7 @@ import { skills } from "@/lib/content";
 
 export default function Skills() {
   return (
-    <Section id="skills" index="04 — Toolkit" title="What I work with">
+    <Section id="skills" index="04 — Skillset & Tools" title="What I work with">
       <div className="grid gap-x-10 md:grid-cols-3">
         {skills.map((group, i) => (
           <motion.div

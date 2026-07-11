@@ -7,10 +7,10 @@ import HoverText from "@/components/HoverText";
 import { site } from "@/lib/content";
 
 const LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Journey", href: "#journey" },
+  { label: "About Me", href: "#about" },
+  { label: "My Career", href: "#journey" },
   { label: "Works", href: "#works" },
-  { label: "Toolkit", href: "#skills" },
+  { label: "Skillset", href: "#skills" },
   { label: "Life", href: "#life" },
   { label: "Contact", href: "#contact" },
 ];

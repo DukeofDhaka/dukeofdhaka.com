@@ -119,7 +119,7 @@ export default function Projects() {
         my.set(e.clientY - 110);
       }}
     >
-      <Section id="works" index="03 — Selected works" title="Things I've built">
+      <Section id="works" index="03 — Works" title="Things I've built">
         <div>
           {projects.map((p, i) => (
             <ProjectRow key={p.title} project={p} i={i} onHover={setHovered} />

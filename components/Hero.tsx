@@ -1,13 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import Magnetic from "@/components/Magnetic";
 import HoverText from "@/components/HoverText";
 import { site, hero } from "@/lib/content";
-
-const Portrait = dynamic(() => import("@/components/Portrait"), { ssr: false });
 
 function RoleRotator() {
   const [i, setI] = useState(0);
@@ -36,10 +33,6 @@ function RoleRotator() {
 export default function Hero() {
   return (
     <header className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:px-10">
-      {/* interactive particle portrait (appears once public/portrait.jpg exists) */}
-      <div className="absolute inset-y-0 right-0 hidden w-[52%] md:block">
-        <Portrait />
-      </div>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent"
@@ -52,7 +45,7 @@ export default function Hero() {
           transition={{ delay: 0.15, duration: 0.6 }}
           className="mb-6 text-xs uppercase tracking-[0.35em] text-paper-dim"
         >
-          দ্য ডিউক অফ ঢাকা — Montréal, Canada
+          {hero.greeting} — দ্য ডিউক অফ ঢাকা
         </motion.p>
 
         <motion.h1

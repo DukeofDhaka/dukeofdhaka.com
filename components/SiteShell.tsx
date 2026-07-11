@@ -6,8 +6,11 @@ import Lenis from "lenis";
 import { site, hero } from "@/lib/content";
 import Splash from "@/components/Splash";
 import MusicChip from "@/components/MusicChip";
+import dynamic from "next/dynamic";
 import Cursor from "@/components/Cursor";
 import Menu from "@/components/Menu";
+
+const Duke = dynamic(() => import("@/components/Duke"), { ssr: false });
 import Marquee from "@/components/Marquee";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -174,6 +177,7 @@ export default function SiteShell() {
       </AnimatePresence>
 
       {entered && <Menu />}
+      {entered && <Duke />}
 
       <main
         id="top"

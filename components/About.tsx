@@ -59,7 +59,7 @@ function ScrollReveal({ paragraphs }: { paragraphs: string[] }) {
 
 export default function About() {
   return (
-    <Section id="about" index="01 — About" title="The short story">
+    <Section id="about" index="01 — About Me" title="Hello, again">
       <div className="grid gap-14 md:grid-cols-[1.7fr_1fr]">
         <ScrollReveal paragraphs={about.paragraphs} />
         <aside className="h-fit border-l border-paper/15 pl-8">
