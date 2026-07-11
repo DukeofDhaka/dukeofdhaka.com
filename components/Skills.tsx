@@ -1,13 +1,26 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import Section from "@/components/Section";
 import { skills } from "@/lib/content";
+
+const TechBalls = dynamic(() => import("@/components/TechBalls"), { ssr: false });
 
 export default function Skills() {
   return (
-    <Section id="skills" index="05 — Skillset & Tools" title="What I work with">
-      <div className="grid gap-x-10 md:grid-cols-3">
+    <section id="skills" className="py-24 sm:py-32">
+      <div className="mx-auto mb-12 max-w-6xl px-6 text-center sm:px-10">
+        <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">
+          05 — Skillset &amp; Tools
+        </p>
+        <h2 className="display-huge text-5xl text-paper sm:text-7xl">My Techstack</h2>
+      </div>
+
+      {/* the physics ball pit */}
+      <TechBalls />
+
+      {/* scannable list underneath */}
+      <div className="mx-auto mt-16 grid max-w-6xl gap-x-10 px-6 sm:px-10 md:grid-cols-3">
         {skills.map((group, i) => (
           <motion.div
             key={group.group}
@@ -33,6 +46,6 @@ export default function Skills() {
           </motion.div>
         ))}
       </div>
-    </Section>
+    </section>
   );
 }

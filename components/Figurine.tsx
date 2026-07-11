@@ -25,17 +25,20 @@ type Keyframe = {
 };
 
 // one keyframe per panel:
-// hero, about, what-i-do, career, works, skillset, life, contact
+// hero, about, what-i-do, career, works, skillset(techstack), life, contact
+// Career/Works/Techstack use centered layouts, so the figurine parks
+// offscreen (fx ±1.7, scale ~0) to keep them clean.
 const KEYFRAMES: Keyframe[] = [
-  { fx: 0.5, fy: -0.1, scale: 1.15, rotY: -0.25, model: "greet" },
-  { fx: 0.62, fy: 0.26, scale: 0.62, rotY: -0.3, model: "sit" },
-  { fx: -0.55, fy: -0.1, scale: 0.95, rotY: 0.4, model: "greet" },
-  { fx: 0.55, fy: -0.12, scale: 0.9, rotY: -0.5, model: "greet" },
-  { fx: 0.65, fy: 0.28, scale: 0.55, rotY: -0.35, model: "sit" },
-  { fx: -0.55, fy: -0.12, scale: 0.85, rotY: 0.5, model: "greet" },
-  { fx: 0.78, fy: -0.1, scale: 0.85, rotY: -0.3, model: "surf" },
-  { fx: 0.5, fy: -0.15, scale: 1.05, rotY: -0.25, model: "sit" },
+  { fx: 0.0, fy: -1.0, scale: 2.7, rotY: 0.0, model: "greet" }, // hero: huge centered bust
+  { fx: -0.52, fy: -0.12, scale: 0.95, rotY: 0.35, model: "sit" }, // about: left of text
+  { fx: -0.5, fy: 0.05, scale: 0.9, rotY: 0.3, model: "sit" }, // what-i-do: left
+  { fx: -1.7, fy: 0, scale: 0.02, rotY: 0, model: "sit" }, // career: parked
+  { fx: 1.7, fy: 0, scale: 0.02, rotY: 0, model: "greet" }, // works: parked
+  { fx: -1.7, fy: 0, scale: 0.02, rotY: 0, model: "greet" }, // techstack: parked
+  { fx: 0.62, fy: -0.06, scale: 0.95, rotY: -0.3, model: "surf" }, // life: surfer right
+  { fx: 0.5, fy: -0.12, scale: 1.05, rotY: -0.25, model: "sit" }, // contact: seated right
 ];
+const HERO_SEG = 0;
 
 const MODEL_URLS: Record<ModelKey, string> = {
   greet: "/models/greet.glb",
@@ -207,11 +210,14 @@ function Cast({ playing }: { playing: boolean }) {
       delta
     );
     g.scale.setScalar(damp(g.scale.x, Math.max(0.02, targetS), 8, delta));
-    g.rotation.y = damp(g.rotation.y, targetR, 6, delta);
-    g.rotation.z = damp(g.rotation.z, velocity.current * 0.06, 5, delta);
 
-    // cursor parallax tilt
-    g.rotation.x = damp(g.rotation.x, -state.pointer.y * 0.08, 5, delta);
+    // in the hero he watches the cursor (strong); elsewhere just a soft tilt
+    const inHero = seg === HERO_SEG && t < 0.5;
+    const faceY = inHero ? state.pointer.x * 0.6 : 0;
+    const faceX = inHero ? -state.pointer.y * 0.25 : -state.pointer.y * 0.08;
+    g.rotation.y = damp(g.rotation.y, targetR + faceY, 6, delta);
+    g.rotation.z = damp(g.rotation.z, velocity.current * 0.06, 5, delta);
+    g.rotation.x = damp(g.rotation.x, faceX, 5, delta);
 
     // music-reactive rim light (~96 BPM pulse while the 23 Theme plays)
     if (rim.current) {

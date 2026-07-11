@@ -1,12 +1,19 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { site } from "@/lib/content";
 
+const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
+
 export default function Footer() {
   return (
-    <footer id="contact" className="flex min-h-screen flex-col justify-center px-6 pb-10 pt-28 sm:px-10">
-      <div className="mx-auto max-w-6xl">
+    <footer id="contact" className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 pb-10 pt-28 sm:px-10">
+      {/* Dhaka → Montréal globe, subtle backdrop */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] opacity-40 lg:block">
+        <Globe />
+      </div>
+      <div className="relative mx-auto w-full max-w-6xl">
         <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">
           07 — Contact
         </p>

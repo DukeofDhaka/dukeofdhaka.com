@@ -9,6 +9,8 @@ import MusicChip from "@/components/MusicChip";
 import dynamic from "next/dynamic";
 import Cursor from "@/components/Cursor";
 import Menu from "@/components/Menu";
+import Navbar from "@/components/Navbar";
+import SocialRail from "@/components/SocialRail";
 
 const Figurine = dynamic(() => import("@/components/Figurine"), { ssr: false });
 import Marquee from "@/components/Marquee";
@@ -39,23 +41,10 @@ declare global {
   }
 }
 
-/** Sections are sticky full-height cards; each one slides up over the last. */
-function Panel({
-  children,
-  first = false,
-}: {
-  children: React.ReactNode;
-  first?: boolean;
-}) {
-  return (
-    <div
-      className={`sticky top-0 min-h-screen bg-ink ${
-        first ? "" : "rounded-t-[2.5rem] border-t border-paper/10 shadow-[0_-20px_60px_rgba(0,0,0,0.6)]"
-      }`}
-    >
-      {children}
-    </div>
-  );
+/** Flat section wrapper (moncy scrolls spacious, not stacked cards).
+ *  Kept as one div per section so Figurine can measure `main > div` tops. */
+function Panel({ children }: { children: React.ReactNode }) {
+  return <div className="relative bg-ink">{children}</div>;
 }
 
 export default function SiteShell() {
@@ -177,6 +166,8 @@ export default function SiteShell() {
         {!entered && <Splash key="splash" onEnter={handleEnter} />}
       </AnimatePresence>
 
+      {entered && <Navbar />}
+      {entered && <SocialRail />}
       {entered && <Menu />}
       {entered && <Figurine playing={playing} />}
 
@@ -185,7 +176,7 @@ export default function SiteShell() {
         className={entered ? "" : "h-screen overflow-hidden"}
         aria-hidden={!entered}
       >
-        <Panel first>
+        <Panel>
           <Hero />
         </Panel>
         <Panel>

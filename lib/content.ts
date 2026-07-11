@@ -26,6 +26,9 @@ export const site = {
 
 export const hero = {
   greeting: "Hello! I'm",
+  // hero right-side flip words (moncy's "DESIGNER / DEVELOPER")
+  flip: ["Analyst", "Builder"],
+  flipLead: "A Data-Driven",
   roles: [
     "a data storyteller",
     "an ex-RBC Capital Markets analyst",
@@ -213,6 +216,32 @@ export const skills = [
       "SAS",
     ],
   },
+];
+
+// labels for the physics ball pit (roughly biggest-first — first 6 render large)
+export const techBalls = [
+  "Python",
+  "SQL",
+  "TypeScript",
+  "React",
+  "FastAPI",
+  "Docker",
+  "PyTorch",
+  "BERT",
+  "ARIMA",
+  "Tableau",
+  "pandas",
+  "scikit-learn",
+  "GitHub Actions",
+  "Bloomberg",
+  "FactSet",
+  "DCF",
+  "CFA",
+  "Vite",
+  "Capacitor",
+  "ETL",
+  "k-NN",
+  "GBM",
 ];
 
 export const life = [

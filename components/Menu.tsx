@@ -62,8 +62,8 @@ export default function Menu() {
 
   return (
     <>
-      {/* top bar */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 mix-blend-difference sm:px-10">
+      {/* top bar — mobile only (Navbar handles desktop) */}
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 mix-blend-difference sm:px-10 md:hidden">
         <button
           onClick={() => go("#top")}
           className="font-display text-sm font-bold uppercase tracking-[0.2em] text-paper"

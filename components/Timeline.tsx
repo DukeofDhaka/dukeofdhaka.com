@@ -1,52 +1,76 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import Section from "@/components/Section";
 import { timeline } from "@/lib/content";
 
-const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
-
+/** moncy-style centered career timeline: role | YEAR | description,
+ *  with a glowing vertical line running down the middle. */
 export default function Timeline() {
   return (
-    <div className="relative">
-      {/* Dhaka → Montréal globe drifting behind the timeline */}
-      <div className="absolute inset-y-0 right-0 hidden w-[45%] opacity-50 lg:block">
-        <Globe />
-      </div>
-      <Section id="journey" index="03 — My Career" title="Where I've been">
-        <ol className="relative z-10">
-        {timeline.map((entry, i) => (
-          <motion.li
-            key={i}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.55, delay: i * 0.08 }}
-            className="grid gap-2 border-t border-paper/15 py-9 last:border-b sm:grid-cols-[200px_1fr]"
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-accent">
-              {entry.period}
-            </p>
-            <div>
-              <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-paper">
-                {entry.title}
-              </h3>
-              <p className="mt-1 text-paper-dim">{entry.org}</p>
+    <section id="journey" className="mx-auto max-w-6xl px-6 py-24 sm:px-10 sm:py-32">
+      <motion.h2
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.7 }}
+        className="mb-16 text-center"
+      >
+        <span className="mb-3 block text-xs uppercase tracking-[0.35em] text-accent">
+          03 — My Career
+        </span>
+        <span className="font-display block text-5xl font-normal lowercase tracking-tight text-paper sm:text-7xl">
+          My career &amp; <span className="italic text-accent">experience</span>
+        </span>
+      </motion.h2>
+
+      <div className="relative">
+        {/* center glowing line (desktop) */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 md:block"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent, rgba(244,42,65,0.5) 12%, rgba(244,42,65,0.5) 88%, transparent)",
+          }}
+        />
+
+        <ol className="space-y-14">
+          {timeline.map((entry, i) => (
+            <motion.li
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, delay: i * 0.05 }}
+              className="grid gap-3 md:grid-cols-[1fr_150px_1fr] md:items-center md:gap-8"
+            >
+              {/* role + org */}
+              <div className="md:text-right">
+                <h3 className="font-display text-2xl font-bold uppercase leading-tight tracking-tight text-paper">
+                  {entry.title}
+                </h3>
+                <p className="mt-1 text-sm text-accent">{entry.org}</p>
+              </div>
+
+              {/* period, big, center */}
+              <div className="relative flex justify-start md:justify-center">
+                <span className="font-display text-xl font-bold text-paper-dim md:text-center md:text-2xl">
+                  {entry.period}
+                </span>
+              </div>
+
+              {/* description */}
               <p
-                className={`mt-3 max-w-2xl leading-relaxed ${
-                  entry.placeholder
-                    ? "italic text-paper-dim/60"
-                    : "text-paper-dim"
+                className={`max-w-sm leading-relaxed ${
+                  entry.placeholder ? "italic text-paper-dim/60" : "text-paper-dim"
                 }`}
               >
                 {entry.details}
               </p>
-            </div>
-          </motion.li>
-        ))}
+            </motion.li>
+          ))}
         </ol>
-      </Section>
-    </div>
+      </div>
+    </section>
   );
 }
