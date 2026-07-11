@@ -86,7 +86,7 @@ body {
 .marquee-track {
   display: inline-flex;
   gap: 0;
-  animation: marquee-scroll 28s linear infinite;
+  animation: marquee-scroll var(--mq-dur, 28s) linear infinite;
   will-change: transform;
 }
 @keyframes marquee-scroll {

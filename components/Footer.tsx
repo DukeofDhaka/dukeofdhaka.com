@@ -8,7 +8,7 @@ export default function Footer() {
     <footer id="contact" className="flex min-h-screen flex-col justify-center px-6 pb-10 pt-28 sm:px-10">
       <div className="mx-auto max-w-6xl">
         <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">
-          06 — Contact
+          07 — Contact
         </p>
         <motion.a
           href={`mailto:${site.email}`}

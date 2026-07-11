@@ -6,7 +6,7 @@ import { life } from "@/lib/content";
 
 export default function Life() {
   return (
-    <Section id="life" index="05 — Beyond the résumé" title="Life, lately">
+    <Section id="life" index="06 — Beyond the résumé" title="Life, lately">
       <div className="grid gap-px overflow-hidden rounded-2xl border border-paper/15 bg-paper/15 sm:grid-cols-2">
         {life.map((item, i) => (
           <motion.div

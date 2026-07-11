@@ -44,6 +44,17 @@ export const hero = {
   ],
 };
 
+export const whatIDo = [
+  {
+    word: "Analyze",
+    line: "Six years of making capital-markets data confess: projection models, SQL at scale, NLP on financial news, computer vision on live rail footage. If it has a signal, I'll find it.",
+  },
+  {
+    word: "Build",
+    line: "Then I ship the answer: automated pipelines that cut 13 minutes to 2, production ML behind FastAPI and Docker, and DeshRide — a whole carpooling platform for Bangladesh.",
+  },
+];
+
 export const about = {
   paragraphs: [
     "I grew up in Dhaka — a city of twenty million people, infinite traffic, and better food than wherever you're reading this from. At eighteen I landed in Halifax for a finance degree at Saint Mary's, where I managed a real $600K student fund and took second place at the Venture Capital Investment Competition in Boston.",

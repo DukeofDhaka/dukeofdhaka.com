@@ -8,6 +8,7 @@ import { site } from "@/lib/content";
 
 const LINKS = [
   { label: "About Me", href: "#about" },
+  { label: "What I Do", href: "#whatido" },
   { label: "My Career", href: "#journey" },
   { label: "Works", href: "#works" },
   { label: "Skillset", href: "#skills" },
@@ -17,7 +18,11 @@ const LINKS = [
 
 declare global {
   interface Window {
-    __lenis?: { scrollTo: (target: string, opts?: object) => void };
+    __lenis?: {
+      scrollTo(target: string, opts?: object): void;
+      on?(event: string, cb: (e: { velocity: number }) => void): void;
+      off?(event: string, cb: (e: { velocity: number }) => void): void;
+    };
   }
 }
 

@@ -14,7 +14,7 @@ export default function Timeline() {
       <div className="absolute inset-y-0 right-0 hidden w-[45%] opacity-50 lg:block">
         <Globe />
       </div>
-      <Section id="journey" index="02 — My Career" title="Where I've been">
+      <Section id="journey" index="03 — My Career" title="Where I've been">
         <ol className="relative z-10">
         {timeline.map((entry, i) => (
           <motion.li

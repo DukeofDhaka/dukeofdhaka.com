@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     url: "https://dukeofdhaka.com",
     siteName: "Duke of Dhaka",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tahsin Fatin — Duke of Dhaka",
+    description:
+      "Analytics, machine learning, and things built between Dhaka and Montréal.",
+    images: ["/og.png"],
   },
 };
 

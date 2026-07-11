@@ -10,8 +10,9 @@ import dynamic from "next/dynamic";
 import Cursor from "@/components/Cursor";
 import Menu from "@/components/Menu";
 
-const Duke = dynamic(() => import("@/components/Duke"), { ssr: false });
+const Figurine = dynamic(() => import("@/components/Figurine"), { ssr: false });
 import Marquee from "@/components/Marquee";
+import WhatIDo from "@/components/WhatIDo";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Timeline from "@/components/Timeline";
@@ -177,7 +178,7 @@ export default function SiteShell() {
       </AnimatePresence>
 
       {entered && <Menu />}
-      {entered && <Duke />}
+      {entered && <Figurine playing={playing} />}
 
       <main
         id="top"
@@ -188,8 +189,11 @@ export default function SiteShell() {
           <Hero />
         </Panel>
         <Panel>
-          <Marquee items={hero.marquee} />
+          <Marquee items={hero.marquee} playing={playing} />
           <About />
+        </Panel>
+        <Panel>
+          <WhatIDo />
         </Panel>
         <Panel>
           <Timeline />
@@ -198,7 +202,7 @@ export default function SiteShell() {
           <Projects />
         </Panel>
         <Panel>
-          <Marquee items={[...hero.marquee].reverse()} />
+          <Marquee items={[...hero.marquee].reverse()} playing={playing} />
           <Skills />
         </Panel>
         <Panel>
