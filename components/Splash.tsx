@@ -34,7 +34,7 @@ export default function Splash({
       exit={{ y: "-100%" }}
       transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
     >
-      <div className="flex items-start justify-between text-[11px] uppercase tracking-[0.25em] text-paper-dim">
+      <div className="pointer-events-none flex items-start justify-between text-[11px] uppercase tracking-[0.25em] text-paper-dim">
         <span>Tahsin Fatin — Portfolio</span>
         <span>©{new Date().getFullYear()}</span>
       </div>
@@ -83,7 +83,7 @@ export default function Splash({
         </div>
       </div>
 
-      <div className="flex items-end justify-between">
+      <div className="pointer-events-none flex items-end justify-between">
         <p className="max-w-[240px] text-[11px] leading-relaxed uppercase tracking-[0.15em] text-paper-dim/70">
           Soundtrack — {site.music.title} · {site.music.artist}
         </p>

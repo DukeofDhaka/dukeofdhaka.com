@@ -42,8 +42,10 @@ ball pit, and a background soundtrack.
 
 Push to `main` → GitHub Actions (`.github/workflows/nextjs.yml`) builds and
 deploys to GitHub Pages → served at dukeofdhaka.com (CNAME in `public/`).
-**Any push to `main` is a live deploy.** Dev happens on branch
-`claude/dukeofdhaka-portfolio-sk4kou`.
+**Any push to `main` is a live deploy.** Dev happens locally in this clone
+(the original cloud-session branch `claude/dukeofdhaka-portfolio-sk4kou` is
+merged into main and retired) — branch before risky work, push to main only
+to ship.
 
 ## Conventions
 
@@ -55,6 +57,9 @@ deploys to GitHub Pages → served at dukeofdhaka.com (CNAME in `public/`).
 - Verify visually after 3D/layout changes: build, serve `out/`, drive with
   Playwright + the pre-installed Chromium (see `scripts`/scratchpad patterns),
   screenshot each section. The figurine needs `--use-gl=swiftshader` headless.
+  The desktop-app preview pane tends to kill the figurine's WebGL context
+  (it unmounts gracefully now instead of white-screening) — judge the
+  figurine itself in a real browser.
 
 ## Known follow-ups
 

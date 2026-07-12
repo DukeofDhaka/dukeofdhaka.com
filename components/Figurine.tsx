@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -247,6 +247,10 @@ function Cast({ playing }: { playing: boolean }) {
 }
 
 export default function Figurine({ playing }: { playing: boolean }) {
+  // A dead WebGL context composites this full-screen canvas as opaque white
+  // over the whole site, so if the context is lost drop the figurine, not the page.
+  const [contextLost, setContextLost] = useState(false);
+  if (contextLost) return null;
   return (
     <div className="pointer-events-none fixed inset-0 z-20" aria-hidden>
       <Canvas
@@ -254,6 +258,11 @@ export default function Figurine({ playing }: { playing: boolean }) {
         dpr={[1, 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
         style={{ background: "transparent" }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener("webglcontextlost", () =>
+            setContextLost(true)
+          );
+        }}
       >
         <Cast playing={playing} />
       </Canvas>
