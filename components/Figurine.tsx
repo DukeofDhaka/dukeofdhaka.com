@@ -56,6 +56,8 @@ const KEYFRAMES_MOBILE: Keyframe[] = KEYFRAMES.map((kf, i) =>
 );
 const HERO_SEG = 0;
 const MOBILE_MAX = 768;
+// how far in front of him the "screen" is when he looks at the cursor, world units
+const LOOK_DEPTH = 2.5;
 
 function useReducedMotion() {
   const ref = useRef(false);
@@ -329,34 +331,48 @@ function Cast({ playing }: { playing: boolean }) {
     // parked = gone: a few-pixel figurine drifting between parking spots reads as a glitch
     g.visible = sc > 0.06;
 
-    // the body only leans toward the cursor in the hero — the head does the looking
-    const inHero = seg === HERO_SEG && t < 0.5;
-    const bodyYaw = inHero ? state.pointer.x * 0.18 : 0;
-    g.rotation.y = damp(g.rotation.y, targetR + bodyYaw, 6, delta);
-    g.rotation.z = damp(g.rotation.z, velocity.current * 0.06, 5, delta);
-    g.rotation.x = damp(g.rotation.x, -state.pointer.y * (inHero ? 0.06 : 0.04), 5, delta);
-
-    // head: look at the cursor from wherever he is on screen
+    // pointer activity drives both the body turn and the head look-at
+    const p = state.pointer;
+    if (p.x !== lastPointer.current.x || p.y !== lastPointer.current.y) {
+      lastPointer.current = { x: p.x, y: p.y, at: time };
+    }
+    const steering = time - lastPointer.current.at <= 2.5;
+    const busy = spinClock.current > 0 || swapT.current > 0.02; // mid-spin / mid-swap
     const head = heads[shown.current];
     const cfg = RIGS[shown.current];
+
+    const inHero = seg === HERO_SEG && t < 0.5;
+    let bodyYaw: number;
+    let bodyPitch: number;
+    if (cfg) {
+      // rigged: the body only leans toward the cursor in the hero — the head does the looking
+      bodyYaw = inHero ? p.x * 0.18 : 0;
+      bodyPitch = -p.y * (inHero ? 0.06 : 0.04);
+    } else {
+      // no head rig (the seated figurine): his whole body turns toward the
+      // cursor from where he sits on screen, and settles when it rests
+      const look = steering && !busy;
+      bodyYaw = look ? clamp(Math.atan2(p.x * halfW - g.position.x, LOOK_DEPTH), -0.45, 0.45) : 0;
+      bodyPitch = look ? -p.y * 0.08 : 0;
+    }
+    g.rotation.y = damp(g.rotation.y, targetR + bodyYaw, 6, delta);
+    g.rotation.z = damp(g.rotation.z, velocity.current * 0.06, 5, delta);
+    g.rotation.x = damp(g.rotation.x, bodyPitch, 5, delta);
+
+    // head: look at the cursor from wherever he is on screen
     if (head && cfg) {
-      const p = state.pointer;
-      if (p.x !== lastPointer.current.x || p.y !== lastPointer.current.y) {
-        lastPointer.current = { x: p.x, y: p.y, at: time };
-      }
       let yaw: number;
       let pitch: number;
-      if (spinClock.current > 0 || swapT.current > 0.02) {
-        yaw = 0; // mid-spin / mid-swap: face forward
+      if (busy) {
+        yaw = 0; // face forward through spins and swaps
         pitch = 0;
-      } else if (time - lastPointer.current.at > 2.5 && !calm) {
+      } else if (!steering && !calm) {
         // nobody's steering (or it's a phone): idle look-around
         yaw = Math.sin(time * 0.5) * cfg.yaw * 0.6;
         pitch = Math.sin(time * 0.37) * 0.08;
       } else {
         head.getWorldPosition(headWorld);
         const ndc = headWorld.clone().project(camera);
-        const LOOK_DEPTH = 2.5; // how far in front of him the "screen" is, world units
         const yawWorld = Math.atan2((p.x - ndc.x) * halfW, LOOK_DEPTH);
         const pitchWorld = -Math.atan2((p.y - ndc.y) * halfH, LOOK_DEPTH);
         yaw = yawWorld - g.rotation.y; // relative to where his body faces
