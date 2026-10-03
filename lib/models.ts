@@ -39,7 +39,8 @@ export type RigConfig = {
 
 export const RIGS: Record<ModelKey, RigConfig | null> = {
   greet: { center: [-0.01, -0.036], radius: [0.08, 0.095], neckY: 0.325, blend: 0.035, yaw: 0.6, pitch: 0.3 },
-  sit: { center: [0.185, -0.094], radius: [0.11, 0.12], neckY: 0.29, blend: 0.03, yaw: 0.55, pitch: 0.28 },
+  // left unrigged on purpose — Tahsin prefers the seated pose without head movement
+  sit: null,
   surf: { center: [0.042, -0.05], radius: [0.045, 0.05], neckY: 0.012, blend: 0.016, minX: 0.004, yaw: 0.35, pitch: 0.2 },
 };
 

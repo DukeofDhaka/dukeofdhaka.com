@@ -35,7 +35,9 @@ ball pit, and a background soundtrack.
   bone at load, so the **head** follows the cursor (body stays planted), nods
   on the beat, and idles when the pointer rests. Constants are in mesh space;
   open the site with `?rig=debug` to see the weight map (red = head) when
-  tuning. Set a model's rig to `null` to disable it.
+  tuning. Set a model's rig to `null` to disable it. The seated "sit"
+  figurine (About, Contact) is deliberately unrigged — Tahsin didn't like
+  its head turning; don't re-enable it.
 - The Figurine and Globe canvases take the pointer from
   `eventSource={document.body}`. **Don't remove that** — without it R3F
   gives the full-screen canvas `pointer-events: auto` and it silently blocks
