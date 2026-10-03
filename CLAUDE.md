@@ -84,8 +84,12 @@ to ship.
   section via `AnimationMixer`. (Ready Player Me shut down Jan 31, 2026 —
   don't recommend it.)
 - Works cards are metric-first. **Every metric must be quoted from that
-  repo's own README** — re-check before changing one. Real figures from the
-  repos (Grad-CAM maps, equity curve) would make good card images next.
+  repo's own README** — re-check before changing one. Each card's `exhibit`
+  is either a real figure copied from the repo's `artifacts/` (cropped to
+  ~880px WebP in `public/works/`, via sharp) or a short typographic tile for
+  work with no public figure. The Equity Research card (Impact Fund pitches
+  + 2026 moat ideas) has no repo; its facts come from Tahsin's own report and
+  application materials — don't name employers or applications on the site.
 - `mcgill-showcases` on GitHub is a fork of someone else's tutorial repo —
   never present it as Tahsin's work.
 - Career timeline is real (from résumés); keep it truthful when editing.

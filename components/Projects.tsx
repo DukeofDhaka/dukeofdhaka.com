@@ -20,59 +20,98 @@ function useIsDesktop() {
   return desktop;
 }
 
-/** Metric-first card: the headline number leads, the story follows. */
+/** Top of the card: a real figure from the repo, or a typographic stand-in. */
+function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
+  return (
+    <figure className="relative h-44 overflow-hidden rounded-t-2xl border-b border-paper/10">
+      {"src" in exhibit ? (
+        <div className="flex h-full items-center justify-center bg-white p-3">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static export, pre-optimized webp */}
+          <img
+            src={exhibit.src}
+            alt={exhibit.caption}
+            loading="lazy"
+            draggable={false}
+            className="max-h-full max-w-full object-contain opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+          />
+        </div>
+      ) : (
+        <div className="flex h-full flex-col justify-center gap-1.5 bg-ink px-7">
+          {exhibit.lines.map((line, k) => (
+            <span
+              key={line}
+              className={`font-display text-lg font-bold uppercase tracking-tight ${
+                k === 0 ? "text-paper" : "text-paper-dim"
+              }`}
+            >
+              {line}
+            </span>
+          ))}
+        </div>
+      )}
+      <figcaption className="absolute bottom-2 left-3 rounded bg-ink/85 px-2 py-0.5 text-[10px] uppercase tracking-[0.15em] text-paper-dim">
+        {exhibit.caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Metric-first card: evidence on top, the headline number, then the story. */
 function Card({ project, i }: { project: Project; i: number }) {
   const tag = project.course ?? (project.flagship ? "Flagship" : "");
   const body = (
     <>
-      <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em]">
-        <span className="font-display font-bold text-paper-dim">
-          {String(i + 1).padStart(2, "0")}
-        </span>
-        {tag && <span className="text-accent">{tag}</span>}
-      </div>
-
-      <p className="display-huge mt-8 text-6xl text-accent sm:text-7xl">
-        {project.metric.value}
-      </p>
-      <p className="mt-2 text-xs uppercase tracking-[0.2em] text-paper-dim">
-        {project.metric.label}
-      </p>
-
-      <div className="my-7 h-px bg-paper/10" />
-
-      <h3 className="font-display text-2xl font-bold uppercase leading-tight tracking-tight text-paper transition-colors group-hover:text-accent">
-        {project.title}
-      </h3>
-      <p className="mt-1 text-sm font-medium text-paper-dim">{project.subtitle}</p>
-      <p className="mt-4 line-clamp-6 text-sm leading-relaxed text-paper-dim/80">
-        {project.description}
-      </p>
-
-      <div className="mt-auto flex flex-wrap gap-2 pt-6">
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-paper/15 px-3 py-1 text-[11px] uppercase tracking-wide text-paper-dim"
-          >
-            {tag}
+      <Exhibit exhibit={project.exhibit} />
+      <div className="flex flex-1 flex-col p-7">
+        <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em]">
+          <span className="font-display font-bold text-paper-dim">
+            {String(i + 1).padStart(2, "0")}
           </span>
-        ))}
+          {tag && <span className="text-accent">{tag}</span>}
+        </div>
+
+        <p className="display-huge mt-6 text-5xl text-accent sm:text-6xl">
+          {project.metric.value}
+        </p>
+        <p className="mt-2 text-xs uppercase tracking-[0.2em] text-paper-dim">
+          {project.metric.label}
+        </p>
+
+        <div className="my-6 h-px bg-paper/10" />
+
+        <h3 className="font-display text-2xl font-bold uppercase leading-tight tracking-tight text-paper transition-colors group-hover:text-accent">
+          {project.title}
+        </h3>
+        <p className="mt-1 text-sm font-medium text-paper-dim">{project.subtitle}</p>
+        <p className="mt-4 line-clamp-6 text-sm leading-relaxed text-paper-dim/80">
+          {project.description}
+        </p>
+
+        <div className="mt-auto flex flex-wrap gap-2 pt-6">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-paper/15 px-3 py-1 text-[11px] uppercase tracking-wide text-paper-dim"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <p className="mt-6 text-xs uppercase tracking-[0.2em] text-paper-dim">
+          {project.link ? (
+            <span className="text-paper transition-colors group-hover:text-accent">
+              View the repo ↗
+            </span>
+          ) : (
+            "No public repo"
+          )}
+        </p>
       </div>
-      <p className="mt-6 text-xs uppercase tracking-[0.2em] text-paper-dim">
-        {project.link ? (
-          <span className="text-paper transition-colors group-hover:text-accent">
-            View the repo ↗
-          </span>
-        ) : (
-          "No public repo yet"
-        )}
-      </p>
     </>
   );
 
   const cls =
-    "group relative flex w-full shrink-0 flex-col rounded-2xl border border-paper/12 bg-ink-soft/60 p-7 transition-colors hover:border-accent/50 md:w-[380px] lg:w-[420px]";
+    "group relative flex w-full shrink-0 flex-col rounded-2xl border border-paper/12 bg-ink-soft/60 transition-colors hover:border-accent/50 md:w-[380px] lg:w-[420px]";
 
   return project.link ? (
     <a

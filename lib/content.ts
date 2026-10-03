@@ -112,17 +112,17 @@ export const timeline: TimelineEntry[] = [
   },
   {
     period: "2018 — 2020",
-    title: "Fund Manager, TMT sector",
+    title: "Research Associate → Fund Manager",
     org: "Impact Fund, Sobey School of Business",
     details:
-      "Managed the TMT book of a $600K student-run fund using DCF/DDM/comps on FactSet, Bloomberg and Capital IQ. Pitched the Maxar liquidation and the OpenText acquisition — both executed. Plus co-ops at Nova Scotia Power (energy forecasting) and East Coast Offshore Supplies.",
+      "Research Associate (2018–19), then Fund Manager (2019–20) of the TMT book in a $600K student-run fund, valuing companies with DCF/DDM/comps on FactSet, Bloomberg and Capital IQ. Pitched the Maxar liquidation and the OpenText acquisition — both executed. Plus co-ops at Nova Scotia Power (energy forecasting) and East Coast Offshore Supplies.",
   },
   {
     period: "2016 — 2020",
     title: "Bachelor of Commerce, Finance",
     org: "Saint Mary's University, Halifax",
     details:
-      "GPA 3.88/4.30, Magna Cum Laude, Beta Gamma Sigma (top 7%). Placed 2nd at the Venture Capital Investment Competition in Boston. Graduated with Co-op Distinction.",
+      "GPA 3.88/4.30, Magna Cum Laude, Dean's List 2017 & 2018, Beta Gamma Sigma (top 7%). Placed 2nd at the Venture Capital Investment Competition in Boston. Graduated with Co-op Distinction.",
   },
 ];
 
@@ -132,6 +132,10 @@ export type Project = {
   description: string;
   /** headline number shown big on the Works card — keep it verifiable */
   metric: { value: string; label: string };
+  /** top of the card: a real figure from the repo, or a typographic one */
+  exhibit:
+    | { src: string; caption: string }
+    | { lines: string[]; caption: string };
   course?: string;
   tags: string[];
   /** omit for work with no public repo */
@@ -143,6 +147,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "DeshRide",
+    exhibit: { src: "/works/deshride.webp", caption: "The brand, from the repo" },
     subtitle: "সমগ্র বাংলাদেশ — intercity carpooling for Bangladesh",
     description:
       "A Poparide-style carpooling platform for all of Bangladesh. Drivers post trips they're already making; travellers book the empty seats. Payments sit in escrow via bKash, Nagad, or card until the trip completes, designed around Bangladesh Bank's digital-commerce rules. Ships as an Android app with automated APK builds.",
@@ -153,6 +158,7 @@ export const projects: Project[] = [
   },
   {
     title: "Portfolio Committee",
+    exhibit: { src: "/works/committee.webp", caption: "Fig. Coordination outcomes by scenario" },
     subtitle: "A governed multi-agent investment committee",
     description:
       "Macro, Sector, Risk and Compliance agents bid through a risk-budget auction, with veto controls and a human CIO approver. Governance fails closed: unsafe or ambiguous decisions escalate instead of trading. Tested against prompt injection, stale data, restricted assets, replay, over-budget bids and specialist timeouts.",
@@ -163,6 +169,7 @@ export const projects: Project[] = [
   },
   {
     title: "Walk-Forward Alpha",
+    exhibit: { src: "/works/walk-forward.webp", caption: "Fig. Growth of $1 — Elastic Net vs SPY, 2017–2023" },
     subtitle: "ML models for cross-sectional stock-return prediction",
     description:
       "Linear, tree-based and neural models compared walk-forward over 84 out-of-sample months (2017–2023), each driving a monthly long-short portfolio. Elastic Net delivered a 14.83% annualized long-short return and 17.41% alpha versus SPY.",
@@ -172,7 +179,18 @@ export const projects: Project[] = [
     link: "https://github.com/DukeofDhaka/fina695-walk-forward-ml-portfolio",
   },
   {
+    title: "Equity Research",
+    exhibit: { lines: ["MAXR  → SELL", "OTEX  → BUY", "DLB · EXPO · MKTX"], caption: "Calls & ideas" },
+    subtitle: "From a student fund's IC to moat-hunting",
+    description:
+      "At the $600K Impact Fund I built the Maxar SELL case — DCF (perpetuity and exit multiple) checked against comps — and pitched the OpenText buy; the fund executed both. Lately: three small/mid-cap moats — Dolby's licensing standard, Exponent's reputation, MarketAxess's network effect — valuation and risks included.",
+    metric: { value: "2/2", label: "IC pitches executed by the fund" },
+    course: "Impact Fund · Saint Mary's",
+    tags: ["DCF", "Comparable companies", "Moat analysis", "Bloomberg · FactSet"],
+  },
+  {
     title: "Residual CNN + Grad-CAM",
+    exhibit: { src: "/works/gradcam.webp", caption: "Fig. Grad-CAM — where the network looks" },
     subtitle: "A custom vision model, and proof of what it learned",
     description:
       "A 7.6M-parameter residual CNN whose activation and receptive field were picked through a controlled four-way ablation, transferred from CIFAR-10 to CIFAR-100 (72.35%), then opened up with feature maps and Grad-CAM.",
@@ -183,6 +201,7 @@ export const projects: Project[] = [
   },
   {
     title: "Transformer Topic Classifier",
+    exhibit: { src: "/works/confusion.webp", caption: "Fig. Normalized confusion matrix" },
     subtitle: "Fine-tuned RoBERTa vs a classic baseline",
     description:
       "Multi-class topic classification on 20 Newsgroups: RoBERTa fine-tuned and calibrated with temperature scaling, benchmarked against TF-IDF + logistic regression, then exported to ONNX with perfect prediction agreement.",
@@ -193,6 +212,7 @@ export const projects: Project[] = [
   },
   {
     title: "Rail Vision × CN",
+    exhibit: { lines: ["live video", "→ real-time inference", "→ defect & wildfire flags"], caption: "Pipeline" },
     subtitle: "Real-time computer vision for Canadian National Railway",
     description:
       "Ongoing McGill partnership with CN (NYSE: CNI): live video analytics that detect rail-line deformities and flag conditions that start track-side wildfires — models built for real-time inference on streaming footage.",
@@ -201,6 +221,7 @@ export const projects: Project[] = [
   },
   {
     title: "Café Inventory RL",
+    exhibit: { src: "/works/cafe-rl.webp", caption: "Fig. Mean profit per 28-day episode" },
     subtitle: "Should a DQN run the kitchen? An honest audit",
     description:
       "Q-learning, DQN and PPO against a business heuristic for daily replenishment, stress-tested through demand spikes, collapses, supplier disruption and spoilage shocks. The verdict was governance, not hype: keep the heuristic live and shadow the DQN for four weeks.",
@@ -210,6 +231,7 @@ export const projects: Project[] = [
   },
   {
     title: "Course Advisor Agent",
+    exhibit: { lines: ["request → agent plan", "→ guardrail re-audits", "→ approved or blocked"], caption: "Control flow" },
     subtitle: "An AI agent that can't break the rules",
     description:
       "A course-planning agent on the OpenAI Agents SDK whose guardrail never trusts the model's own risk claims: it recomputes the policy audit and blocks altered risks, wrong approval flags and blocked-course recommendations.",
@@ -219,6 +241,7 @@ export const projects: Project[] = [
   },
   {
     title: "ML in Production",
+    exhibit: { lines: ["notebook → package", "→ FastAPI → Docker", "→ Render + drift watch"], caption: "Pipeline" },
     subtitle: "From notebook to deployed API",
     description:
       "End-to-end ML predicting whether job candidates will change employers: research notebooks → production package → FastAPI with Pydantic validation → Docker → live on Render with drift monitoring. My contribution hardened the API contract with CI tests.",
