@@ -40,9 +40,9 @@ const KEYFRAMES: Keyframe[] = [
   { fx: 0.0, fy: -1.0, scale: 2.7, rotY: 0.0, model: "greet" }, // hero: huge centered bust
   { fx: -0.52, fy: -0.12, scale: 0.95, rotY: 0.35, model: "sit" }, // about: left of text
   { fx: -0.5, fy: 0.05, scale: 0.9, rotY: 0.3, model: "sit" }, // what-i-do: left
-  { fx: -1.7, fy: 0, scale: 0.02, rotY: 0, model: "sit" }, // career: parked
-  { fx: 1.7, fy: 0, scale: 0.02, rotY: 0, model: "greet" }, // works: parked
-  { fx: -1.7, fy: 0, scale: 0.02, rotY: 0, model: "greet" }, // techstack: parked
+  { fx: -1.7, fy: 0, scale: 0.02, rotY: 0, model: "sit" }, // career: parked (exits left)
+  { fx: 1.7, fy: 0, scale: 0.02, rotY: 0, model: "surf" }, // works: parked
+  { fx: 1.7, fy: 0, scale: 0.02, rotY: 0, model: "surf" }, // techstack: parked right, so he walks into Life from his own side
   { fx: 0.66, fy: -0.06, scale: 0.95, rotY: -0.3, model: "surf" }, // life: surfer in the open right column
   { fx: 0.5, fy: -0.12, scale: 1.05, rotY: -0.25, model: "sit" }, // contact: seated right
 ];
@@ -326,6 +326,8 @@ function Cast({ playing }: { playing: boolean }) {
     const sc = damp(g.scale.x, Math.max(0.02, targetS), calm ? 30 : 8, delta);
     const breath = calm ? 0 : Math.sin(time * 1.5) * 0.006;
     g.scale.set(sc * (1 - breath * 0.4), sc * (1 + breath), sc * (1 - breath * 0.4));
+    // parked = gone: a few-pixel figurine drifting between parking spots reads as a glitch
+    g.visible = sc > 0.06;
 
     // the body only leans toward the cursor in the hero — the head does the looking
     const inHero = seg === HERO_SEG && t < 0.5;

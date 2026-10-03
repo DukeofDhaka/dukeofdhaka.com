@@ -11,6 +11,7 @@ import Cursor from "@/components/Cursor";
 import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar";
 import SocialRail from "@/components/SocialRail";
+import EmailDialog from "@/components/EmailDialog";
 
 const Figurine = dynamic(() => import("@/components/Figurine"), { ssr: false });
 import Marquee from "@/components/Marquee";
@@ -207,6 +208,7 @@ export default function SiteShell() {
       </main>
 
       {entered && <MusicChip playing={playing} onToggle={toggleMusic} />}
+      <EmailDialog />
     </>
   );
 }

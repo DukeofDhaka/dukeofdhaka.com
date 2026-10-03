@@ -1,6 +1,7 @@
 "use client";
 
 import { site } from "@/lib/content";
+import { handleEmailClick } from "@/lib/email";
 
 /** Fixed left-edge social icons, moncy-style. Desktop only. */
 export default function SocialRail() {
@@ -31,6 +32,7 @@ export default function SocialRail() {
           target={it.href.startsWith("http") ? "_blank" : undefined}
           rel="noopener noreferrer"
           aria-label={it.label}
+          onClick={it.href.startsWith("mailto:") ? handleEmailClick : undefined}
           className="text-paper-dim transition-colors hover:text-accent"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">

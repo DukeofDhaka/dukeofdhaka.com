@@ -14,14 +14,30 @@ export const site = {
   location: "Montréal, Canada",
   origin: "Dhaka, Bangladesh",
   email: "tahsinfatin@gmail.com",
+  // prefilled subject when a visitor emails from the site
+  emailSubject: "Hello from dukeofdhaka.com",
   github: "https://github.com/DukeofDhaka",
-  linkedin: "https://linkedin.com/in/tahsinfatin",
+  linkedin: "https://www.linkedin.com/in/tahsinfatin/",
   music: {
     title: "23 Theme (From “AA23”)",
     artist: "Anirudh Ravichander",
     youtubeId: "vu7GnS0lxAI",
     url: "https://www.youtube.com/watch?v=vu7GnS0lxAI",
   },
+};
+
+// The "email me" dialog — every email button opens this instead of a bare
+// mailto: link, which does nothing useful on machines without a mail app.
+export const emailDialog = {
+  title: "Say hello",
+  note: "Pick whatever you write email with — my address and a subject are already filled in.",
+  copy: "Copy",
+  copied: "Copied ✓",
+  options: [
+    { id: "gmail", label: "Gmail" },
+    { id: "outlook", label: "Outlook" },
+    { id: "app", label: "Mail app" },
+  ] as const,
 };
 
 export const hero = {

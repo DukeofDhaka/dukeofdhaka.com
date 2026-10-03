@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { site } from "@/lib/content";
+import { handleEmailClick } from "@/lib/email";
 
 const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
 
@@ -19,6 +20,7 @@ export default function Footer() {
         </p>
         <motion.a
           href={`mailto:${site.email}`}
+          onClick={handleEmailClick}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -42,6 +44,7 @@ export default function Footer() {
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <a
             href={`mailto:${site.email}`}
+            onClick={handleEmailClick}
             className="font-display rounded-full bg-accent px-8 py-4 text-sm font-bold uppercase tracking-wide text-ink transition-transform hover:scale-105"
           >
             {site.email}

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Magnetic from "@/components/Magnetic";
 import HoverText from "@/components/HoverText";
 import { site } from "@/lib/content";
+import { handleEmailClick } from "@/lib/email";
 
 const LINKS = [
   { label: "About Me", href: "#about" },
@@ -20,6 +21,8 @@ declare global {
   interface Window {
     __lenis?: {
       scrollTo(target: string, opts?: object): void;
+      stop?(): void;
+      start?(): void;
       on?(event: string, cb: (e: { velocity: number }) => void): void;
       off?(event: string, cb: (e: { velocity: number }) => void): void;
     };
@@ -135,7 +138,7 @@ export default function Menu() {
               transition={{ delay: 0.6 }}
               className="flex flex-wrap items-end justify-between gap-4 text-[11px] uppercase tracking-[0.2em] text-paper-dim"
             >
-              <a href={`mailto:${site.email}`} className="hover:text-accent">
+              <a href={`mailto:${site.email}`} onClick={handleEmailClick} className="hover:text-accent">
                 {site.email}
               </a>
               <a

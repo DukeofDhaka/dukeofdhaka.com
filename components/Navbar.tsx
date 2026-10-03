@@ -1,6 +1,7 @@
 "use client";
 
 import { site } from "@/lib/content";
+import { handleEmailClick } from "@/lib/email";
 
 const LINKS = [
   { label: "About", href: "#about" },
@@ -25,6 +26,7 @@ export default function Navbar() {
       </button>
       <a
         href={`mailto:${site.email}`}
+        onClick={handleEmailClick}
         className="pointer-events-auto text-sm tracking-[0.15em] text-paper/80 transition-colors hover:text-paper"
       >
         {site.email}
