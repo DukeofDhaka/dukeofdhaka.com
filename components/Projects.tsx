@@ -1,140 +1,223 @@
 "use client";
 
-import { useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { animate, motion, useMotionValue, type PanInfo } from "framer-motion";
 import Section from "@/components/Section";
+import Magnetic from "@/components/Magnetic";
 import { projects, type Project } from "@/lib/content";
 
-function ProjectRow({
-  project,
-  i,
-  onHover,
-}: {
-  project: Project;
-  i: number;
-  onHover: (i: number | null) => void;
-}) {
-  return (
-    <motion.a
+const GAP = 24;
+
+function useIsDesktop() {
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const on = () => setDesktop(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return desktop;
+}
+
+/** Metric-first card: the headline number leads, the story follows. */
+function Card({ project, i }: { project: Project; i: number }) {
+  const tag = project.course ?? (project.flagship ? "Flagship" : "");
+  const body = (
+    <>
+      <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em]">
+        <span className="font-display font-bold text-paper-dim">
+          {String(i + 1).padStart(2, "0")}
+        </span>
+        {tag && <span className="text-accent">{tag}</span>}
+      </div>
+
+      <p className="display-huge mt-8 text-6xl text-accent sm:text-7xl">
+        {project.metric.value}
+      </p>
+      <p className="mt-2 text-xs uppercase tracking-[0.2em] text-paper-dim">
+        {project.metric.label}
+      </p>
+
+      <div className="my-7 h-px bg-paper/10" />
+
+      <h3 className="font-display text-2xl font-bold uppercase leading-tight tracking-tight text-paper transition-colors group-hover:text-accent">
+        {project.title}
+      </h3>
+      <p className="mt-1 text-sm font-medium text-paper-dim">{project.subtitle}</p>
+      <p className="mt-4 line-clamp-6 text-sm leading-relaxed text-paper-dim/80">
+        {project.description}
+      </p>
+
+      <div className="mt-auto flex flex-wrap gap-2 pt-6">
+        {project.tags.map((tag) => (
+          <span
+            key={tag}
+            className="rounded-full border border-paper/15 px-3 py-1 text-[11px] uppercase tracking-wide text-paper-dim"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+      <p className="mt-6 text-xs uppercase tracking-[0.2em] text-paper-dim">
+        {project.link ? (
+          <span className="text-paper transition-colors group-hover:text-accent">
+            View the repo ↗
+          </span>
+        ) : (
+          "No public repo yet"
+        )}
+      </p>
+    </>
+  );
+
+  const cls =
+    "group relative flex w-full shrink-0 flex-col rounded-2xl border border-paper/12 bg-ink-soft/60 p-7 transition-colors hover:border-accent/50 md:w-[380px] lg:w-[420px]";
+
+  return project.link ? (
+    <a
       href={project.link}
       target="_blank"
       rel="noopener noreferrer"
-      onMouseEnter={() => onHover(i)}
-      onMouseLeave={() => onHover(null)}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: i * 0.06 }}
-      className="group block border-t border-paper/15 py-10 transition-colors last:border-b hover:bg-ink-soft sm:py-12"
+      draggable={false}
+      className={cls}
     >
-      <div className="grid items-start gap-4 sm:grid-cols-[80px_1fr_auto]">
-        <span className="font-display text-sm font-bold text-paper-dim">
-          {String(i + 1).padStart(2, "0")}
-        </span>
-
-        <div>
-          <div className="flex flex-wrap items-center gap-4">
-            <h3 className="display-huge text-4xl text-paper transition-colors group-hover:text-accent sm:text-6xl">
-              {project.title}
-            </h3>
-            {project.flagship && (
-              <span className="rounded-full border border-accent/50 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-accent">
-                Flagship
-              </span>
-            )}
-          </div>
-          <p className="mt-3 font-medium text-paper-dim">{project.subtitle}</p>
-          <p className="mt-4 max-w-3xl leading-relaxed text-paper-dim/80">
-            {project.description}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-paper/15 px-3 py-1 text-xs uppercase tracking-wide text-paper-dim"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <span
-          aria-hidden
-          className="hidden text-3xl text-paper-dim transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent sm:block"
-        >
-          ↗
-        </span>
-      </div>
-    </motion.a>
-  );
-}
-
-/** Floating preview card that trails the cursor over the hovered row. */
-function HoverPreview({ hovered }: { hovered: number | null }) {
-  const project = hovered !== null ? projects[hovered] : null;
-  return (
-    <AnimatePresence>
-      {project && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
-          animate={{ opacity: 1, scale: 1, rotate: 3 }}
-          exit={{ opacity: 0, scale: 0.85, rotate: 4 }}
-          transition={{ duration: 0.25 }}
-          className="pointer-events-none relative flex h-52 w-80 flex-col justify-between overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/25 via-ink-soft to-ink p-6 shadow-2xl shadow-accent/20"
-        >
-          <span className="display-huge text-7xl text-outline">
-            {String((hovered ?? 0) + 1).padStart(2, "0")}
-          </span>
-          <div>
-            <p className="font-display text-2xl font-bold uppercase tracking-tight text-paper">
-              {project.title}
-            </p>
-            <p className="mt-1 truncate text-xs uppercase tracking-[0.2em] text-accent">
-              {project.tags.slice(0, 3).join(" · ")}
-            </p>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      {body}
+    </a>
+  ) : (
+    <div className={cls}>{body}</div>
   );
 }
 
 export default function Projects() {
-  const [hovered, setHovered] = useState<number | null>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const x = useSpring(mx, { stiffness: 180, damping: 22, mass: 0.5 });
-  const y = useSpring(my, { stiffness: 180, damping: 22, mass: 0.5 });
+  const desktop = useIsDesktop();
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [index, setIndex] = useState(0);
+  const [step, setStep] = useState(0); // card width + gap
+  const [maxIndex, setMaxIndex] = useState(0);
+  const dragged = useRef(false);
+
+  // measure card width and how far the track can travel
+  useEffect(() => {
+    const measure = () => {
+      const vp = viewportRef.current;
+      const first = trackRef.current?.firstElementChild as HTMLElement | null;
+      if (!vp || !first) return;
+      const s = first.offsetWidth + GAP;
+      const visible = Math.max(1, Math.floor((vp.clientWidth + GAP) / s));
+      setStep(s);
+      setMaxIndex(Math.max(0, projects.length - visible));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [desktop]);
+
+  const go = useCallback(
+    (next: number) => setIndex(Math.max(0, Math.min(maxIndex, next))),
+    [maxIndex]
+  );
+
+  useEffect(() => {
+    const target = desktop ? -index * step : 0;
+    const controls = animate(x, target, { type: "spring", stiffness: 260, damping: 32 });
+    return () => controls.stop();
+  }, [index, step, desktop, x]);
+
+  useEffect(() => {
+    if (index > maxIndex) setIndex(maxIndex);
+  }, [index, maxIndex]);
+
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    if (!step) return;
+    const projected = -x.get() - info.velocity.x * 0.2;
+    go(Math.round(projected / step));
+  };
 
   return (
-    <div
-      onMouseMove={(e) => {
-        mx.set(e.clientX + 28);
-        my.set(e.clientY - 110);
-      }}
-    >
-      <Section id="works" index="04 — Works" title="My Work" centered>
-        <div>
+    <Section id="works" index="04 — Works" title="My Work" centered>
+      <p className="-mt-8 mb-12 text-center text-sm text-paper-dim">
+        Every number below is quoted from the project&apos;s own README.
+      </p>
+
+      <div
+        ref={viewportRef}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Projects"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") {
+            e.preventDefault();
+            go(index + 1);
+          } else if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            go(index - 1);
+          }
+        }}
+        className="rounded-2xl outline-none focus-visible:ring-1 focus-visible:ring-accent/60 md:overflow-hidden"
+      >
+        <motion.div
+          ref={trackRef}
+          style={{ x }}
+          drag={desktop ? "x" : false}
+          dragConstraints={{ left: -maxIndex * step, right: 0 }}
+          dragElastic={0.12}
+          dragMomentum={false}
+          onDragStart={() => (dragged.current = true)}
+          onDragEnd={onDragEnd}
+          onClickCapture={(e) => {
+            // a drag that ends over a card must not open its link
+            if (dragged.current) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            dragged.current = false;
+          }}
+          onPointerDown={() => (dragged.current = false)}
+          className="flex flex-col items-stretch gap-6 md:cursor-grab md:flex-row md:active:cursor-grabbing"
+        >
           {projects.map((p, i) => (
-            <ProjectRow key={p.title} project={p} i={i} onHover={setHovered} />
+            <Card key={p.title} project={p} i={i} />
+          ))}
+        </motion.div>
+      </div>
+
+      {/* controls (tablet/desktop) */}
+      <div className="mt-10 hidden items-center gap-8 md:flex">
+        <span className="font-display w-24 text-sm font-bold tabular-nums text-paper">
+          {String(index + 1).padStart(2, "0")}
+          <span className="text-paper-dim"> / {String(projects.length).padStart(2, "0")}</span>
+        </span>
+        <div className="relative h-px flex-1 bg-paper/15">
+          <motion.div
+            className="absolute inset-y-0 left-0 bg-accent"
+            animate={{
+              width: `${((Math.min(index + (projects.length - maxIndex), projects.length)) / projects.length) * 100}%`,
+            }}
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+          />
+        </div>
+        <div className="flex gap-3">
+          {[
+            { label: "Previous project", dir: -1, glyph: "←", disabled: index === 0 },
+            { label: "Next project", dir: 1, glyph: "→", disabled: index >= maxIndex },
+          ].map((b) => (
+            <Magnetic key={b.label} strength={0.4}>
+              <button
+                onClick={() => go(index + b.dir)}
+                disabled={b.disabled}
+                aria-label={b.label}
+                className="flex h-14 w-14 items-center justify-center rounded-full border border-paper/25 text-lg text-paper transition-colors hover:border-accent hover:text-accent disabled:opacity-30 disabled:hover:border-paper/25 disabled:hover:text-paper"
+              >
+                {b.glyph}
+              </button>
+            </Magnetic>
           ))}
         </div>
-      </Section>
-
-      {/* desktop-only floating preview */}
-      <motion.div
-        style={{ x, y }}
-        className="pointer-events-none fixed left-0 top-0 z-30 hidden lg:block"
-        aria-hidden
-      >
-        <HoverPreview hovered={hovered} />
-      </motion.div>
-    </div>
+      </div>
+    </Section>
   );
 }

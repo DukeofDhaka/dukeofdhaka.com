@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** Gold dot + trailing ring cursor; the ring swells over links/buttons.
+/** Red dot + trailing ring cursor; the ring swells over links/buttons.
  *  CSS hides it entirely on touch devices. */
 export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);

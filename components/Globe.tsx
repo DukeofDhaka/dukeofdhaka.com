@@ -110,6 +110,9 @@ export default function Globe() {
       camera={{ position: [0, 0, 2.55], fov: 45 }}
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+      // pointer comes from the page so the canvas never blocks the contact links
+      eventSource={document.body}
+      eventPrefix="client"
       style={{ background: "transparent" }}
     >
       <GlobeScene />

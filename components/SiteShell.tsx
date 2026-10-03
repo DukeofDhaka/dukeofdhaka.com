@@ -53,9 +53,11 @@ export default function SiteShell() {
   const playerRef = useRef<YTPlayer | null>(null);
   const pendingPlay = useRef(false);
 
-  // Lenis smooth scrolling once the visitor is in
+  // Lenis smooth scrolling once the visitor is in (native scroll if they
+  // prefer reduced motion)
   useEffect(() => {
     if (!entered) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const lenis = new Lenis({ lerp: 0.1 });
     window.__lenis = lenis;
     let raf = 0;

@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { site } from "@/lib/content";
 
-/** Preloader-style intro: counter runs 0→100, then the enter controls appear.
- *  Entering is what starts the soundtrack (browsers require the gesture). */
+/** Preloader intro: the counter tracks the figurines actually downloading and
+ *  decoding (with a short minimum so it still feels designed), then the enter
+ *  controls appear. Entering is what starts the soundtrack (browsers require
+ *  the gesture). */
 export default function Splash({
   onEnter,
 }: {
@@ -15,14 +17,28 @@ export default function Splash({
   const loaded = count >= 100;
 
   useEffect(() => {
+    const MIN = 1200; // never flash by
+    const MAX_WAIT = 10000; // never trap anyone behind a slow network
     const start = performance.now();
-    const DURATION = 1700;
+    let assets = 0;
+    let done = false;
+    import("@/lib/models")
+      .then((m) => m.preloadModels((p) => (assets = p)))
+      .catch(() => {})
+      .finally(() => (done = true));
+
+    let shown = 0;
     let raf = 0;
     const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / DURATION);
-      // ease-out so the counter sprints early and lands softly
-      setCount(Math.round(100 * (1 - Math.pow(1 - p, 3))));
-      if (p < 1) raf = requestAnimationFrame(tick);
+      const elapsed = now - start;
+      const target =
+        elapsed > MAX_WAIT
+          ? 1
+          : Math.min(elapsed / MIN, done ? 1 : 0.08 + 0.9 * assets);
+      shown += (target - shown) * 0.12;
+      if (target >= 1 && shown > 0.995) shown = 1;
+      setCount(Math.round(shown * 100));
+      if (shown < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);

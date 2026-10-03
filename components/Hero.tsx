@@ -36,9 +36,12 @@ function FlipWord() {
   );
 }
 
+const btn =
+  "group font-display block rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wide text-paper sm:px-7 sm:py-3.5 sm:text-sm";
+
 export default function Hero() {
   return (
-    <header className="relative flex min-h-screen items-center overflow-hidden px-6 sm:px-10">
+    <header className="relative flex min-h-screen flex-col overflow-hidden px-6 pt-28 sm:px-10 md:flex-row md:items-center md:pt-0">
       {/* red glow orbs */}
       <div
         aria-hidden
@@ -53,9 +56,9 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-[1fr_auto_1fr]">
-        {/* left — name */}
-        <div className="pointer-events-none">
+      {/* phones: name → role → CTAs stacked; desktop: name+CTAs | figurine | role */}
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 gap-7 md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-x-8 md:gap-y-8">
+        <div className="pointer-events-none md:col-start-1 md:row-start-1 md:self-end">
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,56 +77,58 @@ export default function Hero() {
             <br />
             Fatin
           </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.85, duration: 0.6 }}
-            className="pointer-events-auto mt-8 flex flex-wrap items-center gap-4"
-          >
-            <Magnetic>
-              <a
-                href="#works"
-                className="group font-display block rounded-full bg-accent px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-paper"
-              >
-                Selected works ↓
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <a
-                href={site.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group font-display block rounded-full border border-paper/25 px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-paper"
-              >
-                <HoverText text="GitHub ↗" />
-              </a>
-            </Magnetic>
-          </motion.div>
         </div>
 
-        {/* center — figurine lives here (rendered by the fixed canvas) */}
-        <div className="hidden h-[62vh] w-[1px] md:block" aria-hidden />
-
-        {/* right — flip role */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.7 }}
-          className="pointer-events-none md:text-right"
+          className="pointer-events-none md:col-start-3 md:row-span-2 md:row-start-1 md:self-center md:text-right"
         >
           <p className="mb-1 text-lg tracking-tight text-accent">{hero.flipLead}</p>
           <div className="font-display text-5xl font-bold uppercase leading-none tracking-tight sm:text-7xl">
             <FlipWord />
           </div>
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.85, duration: 0.6 }}
+          className="pointer-events-auto flex flex-wrap items-center gap-3 sm:gap-4 md:col-start-1 md:row-start-2 md:self-start"
+        >
+          <Magnetic>
+            <a href="#works" className={`${btn} bg-accent`}>
+              Selected works ↓
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${btn} border border-paper/25`}
+            >
+              <HoverText text="GitHub ↗" />
+            </a>
+          </Magnetic>
+        </motion.div>
+
+        {/* center — figurine lives here on desktop (rendered by the fixed canvas) */}
+        <div
+          className="hidden h-[62vh] w-[1px] md:col-start-2 md:row-span-2 md:row-start-1 md:block"
+          aria-hidden
+        />
       </div>
+
+      {/* phones: reserved space the figurine's bust frames itself into */}
+      <div data-hero-band className="min-h-[36vh] flex-1 md:hidden" aria-hidden />
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-paper-dim"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 text-paper-dim md:block"
       >
         <motion.span
           animate={{ y: [0, 8, 0] }}

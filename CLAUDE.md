@@ -27,7 +27,21 @@ ball pit, and a background soundtrack.
 - `components/Figurine.tsx` — the 3D character. `KEYFRAMES` array = one entry
   per section panel (position `fx`/`fy` as viewport fractions, `scale`,
   `rotY`, and which `model`). Tuning the character's size/position per
-  section = editing these numbers. In the hero he faces the cursor.
+  section = editing these numbers. Phones (<768px) use `KEYFRAMES_MOBILE`:
+  he only appears in the hero, framed into the `data-hero-band` spacer in
+  `Hero.tsx`, and parks offscreen elsewhere (floating over text is unreadable
+  on a phone). Keep sections that host him with an open column on desktop.
+- Head rig: `lib/models.ts` → `RIGS` skins each figurine's head to a neck
+  bone at load, so the **head** follows the cursor (body stays planted), nods
+  on the beat, and idles when the pointer rests. Constants are in mesh space;
+  open the site with `?rig=debug` to see the weight map (red = head) when
+  tuning. Set a model's rig to `null` to disable it.
+- The Figurine and Globe canvases take the pointer from
+  `eventSource={document.body}`. **Don't remove that** — without it R3F
+  gives the full-screen canvas `pointer-events: auto` and it silently blocks
+  every click on the page beneath it.
+- `lib/models.ts` also preloads the GLBs during the splash; the splash % is
+  real download/decode progress (min 1.2 s, 10 s escape hatch).
 - `components/TechBalls.tsx` — matter.js ball pit; labels come from
   `techBalls` in content.ts.
 - Section components: `Hero`, `About`, `WhatIDo`, `Timeline` (career),
@@ -63,8 +77,15 @@ to ship.
 
 ## Known follow-ups
 
-- Figurines are **unrigged single meshes** — the whole body turns to face the
-  cursor, but eyes/head can't move independently. For true eye-tracking, swap
-  in a rigged avatar (Ready Player Me `.glb`) — it drops into `Figurine.tsx`.
-- Works cards are typographic (no project screenshots yet).
+- Figurines are single scanned meshes with a procedural **head-only** rig —
+  arms/body can't animate. For a fully animated character (wave, type, surf
+  as one model), generate an A-pose full-body model from photos in Meshy or
+  Tripo, auto-rig it there, export GLB with clips, and play a clip per
+  section via `AnimationMixer`. (Ready Player Me shut down Jan 31, 2026 —
+  don't recommend it.)
+- Works cards are metric-first. **Every metric must be quoted from that
+  repo's own README** — re-check before changing one. Real figures from the
+  repos (Grad-CAM maps, equity curve) would make good card images next.
+- `mcgill-showcases` on GitHub is a fork of someone else's tutorial repo —
+  never present it as Tahsin's work.
 - Career timeline is real (from résumés); keep it truthful when editing.

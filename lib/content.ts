@@ -130,54 +130,102 @@ export type Project = {
   title: string;
   subtitle: string;
   description: string;
+  /** headline number shown big on the Works card — keep it verifiable */
+  metric: { value: string; label: string };
+  course?: string;
   tags: string[];
-  link: string;
-  linkLabel: string;
+  /** omit for work with no public repo */
+  link?: string;
   flagship?: boolean;
-  accent: "green" | "gold" | "blue";
 };
 
+// Every metric below is quoted from the repo's own README — keep it that way.
 export const projects: Project[] = [
   {
     title: "DeshRide",
     subtitle: "সমগ্র বাংলাদেশ — intercity carpooling for Bangladesh",
     description:
-      "A Poparide-style carpooling platform covering all 64 districts of Bangladesh. Drivers post trips they're already making; travellers book the empty seats. Payments are held in escrow via bKash, Nagad, or card — released only after the trip completes, designed around Bangladesh Bank's digital-commerce rules. Ships as an Android app with automated APK builds.",
+      "A Poparide-style carpooling platform for all of Bangladesh. Drivers post trips they're already making; travellers book the empty seats. Payments sit in escrow via bKash, Nagad, or card until the trip completes, designed around Bangladesh Bank's digital-commerce rules. Ships as an Android app with automated APK builds.",
+    metric: { value: "64", label: "districts covered" },
     tags: ["TypeScript", "Vite", "Capacitor", "Escrow payments", "GitHub Actions"],
     link: "https://github.com/DukeofDhaka/deshride-app",
-    linkLabel: "github.com/DukeofDhaka/deshride-app",
     flagship: true,
-    accent: "green",
+  },
+  {
+    title: "Portfolio Committee",
+    subtitle: "A governed multi-agent investment committee",
+    description:
+      "Macro, Sector, Risk and Compliance agents bid through a risk-budget auction, with veto controls and a human CIO approver. Governance fails closed: unsafe or ambiguous decisions escalate instead of trading. Tested against prompt injection, stale data, restricted assets, replay, over-budget bids and specialist timeouts.",
+    metric: { value: "13/13", label: "adversarial scenarios pass" },
+    course: "MGSC 697 · capstone",
+    tags: ["Multi-agent systems", "OpenAI Agents SDK", "Python", "Evals"],
+    link: "https://github.com/DukeofDhaka/portfolio-committee-multi-agent-system",
+  },
+  {
+    title: "Walk-Forward Alpha",
+    subtitle: "ML models for cross-sectional stock-return prediction",
+    description:
+      "Linear, tree-based and neural models compared walk-forward over 84 out-of-sample months (2017–2023), each driving a monthly long-short portfolio. Elastic Net delivered a 14.83% annualized long-short return and 17.41% alpha versus SPY.",
+    metric: { value: "0.948", label: "Sharpe — vs 0.633 for SPY" },
+    course: "FINA 695",
+    tags: ["Elastic Net", "Gradient boosting", "TensorFlow", "Walk-forward CV"],
+    link: "https://github.com/DukeofDhaka/fina695-walk-forward-ml-portfolio",
+  },
+  {
+    title: "Residual CNN + Grad-CAM",
+    subtitle: "A custom vision model, and proof of what it learned",
+    description:
+      "A 7.6M-parameter residual CNN whose activation and receptive field were picked through a controlled four-way ablation, transferred from CIFAR-10 to CIFAR-100 (72.35%), then opened up with feature maps and Grad-CAM.",
+    metric: { value: "93.5%", label: "CIFAR-10 test accuracy" },
+    course: "MGSC 695",
+    tags: ["PyTorch", "Computer vision", "Transfer learning", "Grad-CAM"],
+    link: "https://github.com/DukeofDhaka/residual-cnn-vision-explainability",
+  },
+  {
+    title: "Transformer Topic Classifier",
+    subtitle: "Fine-tuned RoBERTa vs a classic baseline",
+    description:
+      "Multi-class topic classification on 20 Newsgroups: RoBERTa fine-tuned and calibrated with temperature scaling, benchmarked against TF-IDF + logistic regression, then exported to ONNX with perfect prediction agreement.",
+    metric: { value: "77.6%", label: "macro-F1 — vs 71.6% TF-IDF" },
+    course: "MGSC 695",
+    tags: ["RoBERTa", "Transformers", "ONNX", "Calibration"],
+    link: "https://github.com/DukeofDhaka/transformer-text-classification-system",
   },
   {
     title: "Rail Vision × CN",
     subtitle: "Real-time computer vision for Canadian National Railway",
     description:
       "Ongoing McGill partnership with CN (NYSE: CNI): live video analytics that detect rail-line deformities and flag conditions that start track-side wildfires — models built for real-time inference on streaming footage.",
-    tags: ["Computer Vision", "Python", "Real-time inference", "McGill × CN"],
-    link: "https://github.com/DukeofDhaka",
-    linkLabel: "In progress — repo coming",
-    accent: "blue",
+    metric: { value: "CN", label: "industry partner · in progress" },
+    tags: ["Computer vision", "Python", "Real-time inference"],
   },
   {
-    title: "Market Sentiment",
-    subtitle: "Forecasting stock moves from financial news",
+    title: "Café Inventory RL",
+    subtitle: "Should a DQN run the kitchen? An honest audit",
     description:
-      "Time-series forecasting (ARIMA) fused with BERT-based sentiment extracted from news coverage, testing whether headlines lead price action. Built during the McGill MMA — where finance experience meets NLP.",
-    tags: ["ARIMA", "BERT", "NLP", "Time series", "Python"],
-    link: "https://github.com/DukeofDhaka",
-    linkLabel: "In progress — repo coming",
-    accent: "gold",
+      "Q-learning, DQN and PPO against a business heuristic for daily replenishment, stress-tested through demand spikes, collapses, supplier disruption and spoilage shocks. The verdict was governance, not hype: keep the heuristic live and shadow the DQN for four weeks.",
+    metric: { value: "95.2%", label: "service level — vs 92.0% heuristic" },
+    tags: ["DQN", "PPO", "Gymnasium", "Decision science"],
+    link: "https://github.com/DukeofDhaka/campus-cafe-inventory-rl",
   },
   {
-    title: "ML in Production — INSY 674",
+    title: "Course Advisor Agent",
+    subtitle: "An AI agent that can't break the rules",
+    description:
+      "A course-planning agent on the OpenAI Agents SDK whose guardrail never trusts the model's own risk claims: it recomputes the policy audit and blocks altered risks, wrong approval flags and blocked-course recommendations.",
+    metric: { value: "8/8", label: "offline evals pass" },
+    tags: ["OpenAI Agents SDK", "Guardrails", "Pydantic", "pytest"],
+    link: "https://github.com/DukeofDhaka/mcgill-course-advisor-agent",
+  },
+  {
+    title: "ML in Production",
     subtitle: "From notebook to deployed API",
     description:
       "End-to-end ML predicting whether job candidates will change employers: research notebooks → production package → FastAPI with Pydantic validation → Docker → live on Render with drift monitoring. My contribution hardened the API contract with CI tests.",
-    tags: ["Python", "scikit-learn", "FastAPI", "Docker", "CI/CD"],
+    metric: { value: "API", label: "FastAPI · Docker · Render" },
+    course: "INSY 674",
+    tags: ["scikit-learn", "FastAPI", "Docker", "CI/CD"],
     link: "https://github.com/DukeofDhaka/INSY-674",
-    linkLabel: "github.com/DukeofDhaka/INSY-674",
-    accent: "blue",
   },
 ];
 
@@ -188,9 +236,11 @@ export const skills = [
       "Python",
       "SQL",
       "pandas / scikit-learn",
-      "NLP (BERT)",
-      "Time series (ARIMA)",
+      "Deep learning (PyTorch · TensorFlow)",
+      "NLP (RoBERTa · BERT)",
       "Computer vision",
+      "Reinforcement learning (DQN · PPO)",
+      "Time series (ARIMA)",
       "Tableau",
     ],
   },
@@ -208,12 +258,13 @@ export const skills = [
   {
     group: "Engineering & Tools",
     items: [
+      "Agentic AI (OpenAI Agents SDK)",
+      "FastAPI · Pydantic",
+      "Docker · ONNX",
+      "pytest & evals",
       "TypeScript / React",
-      "FastAPI",
-      "Docker",
       "Git & GitHub Actions",
-      "ETL pipelines",
-      "SAS",
+      "ETL pipelines · SAS",
     ],
   },
 ];
@@ -227,21 +278,22 @@ export const techBalls = [
   "FastAPI",
   "Docker",
   "PyTorch",
-  "BERT",
-  "ARIMA",
+  "TensorFlow",
+  "RoBERTa",
+  "ONNX",
+  "Agents SDK",
   "Tableau",
   "pandas",
   "scikit-learn",
+  "DQN · PPO",
+  "Pydantic",
+  "pytest",
   "GitHub Actions",
   "Bloomberg",
   "FactSet",
   "DCF",
   "CFA",
-  "Vite",
-  "Capacitor",
-  "ETL",
-  "k-NN",
-  "GBM",
+  "ARIMA",
 ];
 
 export const life = [
@@ -256,13 +308,6 @@ export const life = [
     emoji: "🎧",
     link: "https://www.youtube.com/watch?v=vu7GnS0lxAI",
     linkLabel: "Hear it on YouTube",
-  },
-  {
-    title: "I quantify everything",
-    text: "I'm an analytics person in the truest sense: I even log my bad habits to JSON. Exhibit A: AmrCigarateKhawaTracker.py — a Python tracker for how many cigarettes ami khaise. The data trends downward. Mostly.",
-    emoji: "📉",
-    link: "https://github.com/DukeofDhaka/Cigarate-Smok-tracker",
-    linkLabel: "The evidence, on GitHub",
   },
   {
     title: "Red Cross roots",
