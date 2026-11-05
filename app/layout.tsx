@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import localFont from "next/font/local";
 import { site } from "@/lib/content";
@@ -42,6 +42,13 @@ export const metadata: Metadata = {
       "Analytics, machine learning, and things built between Dhaka and Montréal.",
     images: ["/og.png"],
   },
+};
+
+// Black status bar / toolbar on iPhone, and let the page run edge to edge
+// (fixed controls pad themselves with env(safe-area-inset-*)).
+export const viewport: Viewport = {
+  themeColor: "#050505",
+  viewportFit: "cover",
 };
 
 // Structured data so search engines can connect the name, schools and profiles.

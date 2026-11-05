@@ -65,8 +65,15 @@ export default function Menu() {
 
   return (
     <>
-      {/* top bar — mobile only (Navbar handles desktop) */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 mix-blend-difference sm:px-10 md:hidden">
+      {/* top bar — mobile only (Navbar handles desktop). The fade behind it
+          keeps the name readable over the marquee and section text. */}
+      {!open && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-x-0 top-0 z-30 h-[calc(5.5rem+env(safe-area-inset-top))] bg-gradient-to-b from-ink via-ink/80 to-transparent md:hidden"
+        />
+      )}
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between pb-5 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-[max(1.25rem,env(safe-area-inset-top))] mix-blend-difference sm:pl-10 sm:pr-10 md:hidden">
         <button
           onClick={() => go("#top")}
           className="font-display text-sm font-bold uppercase tracking-[0.2em] text-paper"
@@ -104,7 +111,8 @@ export default function Menu() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-30 flex flex-col justify-between bg-ink-soft px-6 pb-10 pt-28 sm:px-10"
+            data-lenis-prevent
+            className="fixed inset-0 z-[35] flex flex-col justify-between overflow-y-auto bg-ink-soft px-6 pb-[calc(2.5rem+env(safe-area-inset-bottom))] pt-[calc(7rem+env(safe-area-inset-top))] sm:px-10"
           >
             <ul>
               {LINKS.map((link, i) => (
@@ -118,12 +126,12 @@ export default function Menu() {
                 >
                   <button
                     onClick={() => go(link.href)}
-                    className="group flex w-full items-baseline gap-6 py-4 text-left"
+                    className="group flex w-full items-baseline gap-6 py-4 text-left [@media(max-height:760px)]:py-2.5"
                   >
                     <span className="text-xs text-accent">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="display-huge text-5xl text-paper sm:text-7xl">
+                    <span className="display-huge text-5xl text-paper [@media(max-height:760px)]:text-[2.6rem] sm:text-7xl">
                       <HoverText text={link.label} />
                     </span>
                   </button>

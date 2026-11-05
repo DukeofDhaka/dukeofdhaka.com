@@ -209,29 +209,39 @@ export default function TechBalls() {
       raf = requestAnimationFrame(tick);
     };
 
-    // cursor repulsion — the "juggle"
-    const onMove = (e: MouseEvent) => {
+    // cursor repulsion — the "juggle". `power` > 1 is a finger tap: a kick.
+    const push = (clientX: number, clientY: number, power = 1) => {
       if (!visible) return;
       const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
+      const mx = clientX - rect.left;
+      const my = clientY - rect.top;
       if (mx < -50 || mx > rect.width + 50 || my < -50 || my > rect.height + 50) return;
+      const R = 140 * Math.sqrt(power);
       for (const b of balls) {
         const dx = b.body.position.x - mx;
         const dy = b.body.position.y - my;
         const d2 = dx * dx + dy * dy;
-        const R = 140;
         if (d2 < R * R && d2 > 1) {
           const d = Math.sqrt(d2);
-          const f = ((R - d) / R) * 0.9;
+          const f = ((R - d) / R) * 0.9 * power;
           Matter.Body.applyForce(b.body, b.body.position, {
             x: (dx / d) * f * 0.09,
-            y: (dy / d) * f * 0.09 - 0.02,
+            y: (dy / d) * f * 0.09 - 0.02 * power,
           });
         }
       }
     };
+    const onMove = (e: MouseEvent) => push(e.clientX, e.clientY);
+    // touch: passive listeners on the canvas only, so the page still scrolls
+    const onTouchStart = (e: TouchEvent) => {
+      for (const t of Array.from(e.changedTouches)) push(t.clientX, t.clientY, 2.2);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      for (const t of Array.from(e.changedTouches)) push(t.clientX, t.clientY, 0.6);
+    };
     window.addEventListener("mousemove", onMove, { passive: true });
+    canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+    canvas.addEventListener("touchmove", onTouchMove, { passive: true });
 
     // drop the balls the first time the pit is visible; pause while offscreen
     const io = new IntersectionObserver(
@@ -258,6 +268,8 @@ export default function TechBalls() {
 
     return () => {
       window.removeEventListener("mousemove", onMove);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
       io.disconnect();
       ro.disconnect();
       clearTimeout(resizeT);
@@ -271,10 +283,11 @@ export default function TechBalls() {
         ref={canvasRef}
         className="block w-full rounded-2xl border border-paper/10 bg-ink-soft/40"
         style={{ height: H }}
-        aria-label="Interactive tech stack — move your mouse to scatter the balls"
+        aria-label="Interactive tech stack — move your mouse or tap to scatter the balls"
       />
       <p className="mt-3 text-center text-[11px] uppercase tracking-[0.25em] text-paper-dim/60">
-        move your mouse through the pit ↑
+        <span className="[@media(hover:none)]:hidden">move your mouse through the pit ↑</span>
+        <span className="hidden [@media(hover:none)]:inline">tap the pit to kick the balls ↑</span>
       </p>
     </div>
   );

@@ -41,7 +41,7 @@ const btn =
 
 export default function Hero() {
   return (
-    <header className="relative flex min-h-screen flex-col overflow-hidden px-6 pt-28 sm:px-10 md:flex-row md:items-center md:pt-0">
+    <header className="relative flex min-h-svh flex-col overflow-hidden px-6 pt-[calc(7rem+env(safe-area-inset-top))] [@media(max-height:700px)]:pt-[calc(6rem+env(safe-area-inset-top))] sm:px-10 md:flex-row md:items-center md:pt-0">
       {/* red glow orbs */}
       <div
         aria-hidden

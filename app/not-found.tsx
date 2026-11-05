@@ -6,7 +6,7 @@ const Surf404 = dynamic(() => import("@/components/Surf404"), { ssr: false });
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-ink px-6 text-center">
+    <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-ink px-6 text-center">
       <div className="absolute inset-x-0 top-0 h-[55vh]">
         <Surf404 />
       </div>

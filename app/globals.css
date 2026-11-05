@@ -16,6 +16,10 @@
 
 html {
   background: var(--color-ink);
+  /* iPhone: don't inflate text on rotation, no grey flash on tap */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -24,6 +28,20 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
+  /* viewport-fit=cover: keep content clear of the notch in landscape */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* touch screens have no hover — give every tap a visible press instead
+   (in a layer, so a utility like active:opacity-100 can override it) */
+@layer base {
+  @media (hover: none) {
+    a:active,
+    button:active {
+      opacity: 0.7;
+    }
+  }
 }
 
 ::selection {

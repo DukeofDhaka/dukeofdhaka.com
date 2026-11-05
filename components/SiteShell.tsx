@@ -54,6 +54,14 @@ export default function SiteShell() {
   const playerRef = useRef<YTPlayer | null>(null);
   const pendingPlay = useRef(false);
 
+  // iOS Safari only applies :active (our tap feedback) when the page has a
+  // touchstart listener somewhere — a passive no-op is enough
+  useEffect(() => {
+    const noop = () => {};
+    document.addEventListener("touchstart", noop, { passive: true });
+    return () => document.removeEventListener("touchstart", noop);
+  }, []);
+
   // Lenis smooth scrolling once the visitor is in (native scroll if they
   // prefer reduced motion)
   useEffect(() => {
@@ -176,7 +184,7 @@ export default function SiteShell() {
 
       <main
         id="top"
-        className={entered ? "" : "h-screen overflow-hidden"}
+        className={entered ? "" : "h-svh overflow-hidden"}
         aria-hidden={!entered}
       >
         <Panel>

@@ -17,7 +17,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-40 hidden items-center justify-between px-10 py-6 mix-blend-difference md:flex">
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-40 hidden items-center justify-between pl-[max(2.5rem,env(safe-area-inset-left))] pr-[max(2.5rem,env(safe-area-inset-right))] py-6 mix-blend-difference md:flex">
       <button
         onClick={() => go("#top")}
         className="font-display pointer-events-auto text-sm font-bold tracking-wide text-paper"

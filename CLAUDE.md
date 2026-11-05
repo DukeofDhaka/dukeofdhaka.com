@@ -70,6 +70,13 @@ to ship.
 - Design tokens in `app/globals.css` `@theme`: `--color-accent` (#f42a41 red),
   `ink`/`ink-soft` (near-black), `paper`/`paper-dim` (off-white). Fonts:
   Clash Display (display) + Geist (body).
+- iPhone: full-height sections use `svh` (not `h-screen`/100vh, which runs
+  under Safari's toolbar). The viewport is `viewport-fit=cover`, so anything
+  `fixed` near an edge pads itself with `env(safe-area-inset-*)` (see
+  `Menu.tsx`, `MusicChip.tsx`, `Navbar.tsx`). Touch screens get tap feedback
+  from the `(hover: none)` rule in `globals.css`. Check phones with
+  Playwright's iPhone presets plus CDP `Emulation.setSafeAreaInsetsOverride`
+  (top 59 / bottom 34) to fake the notch.
 - Music can't autoplay unmuted — the splash "tap to enter" gesture is what
   legally starts it. Don't try to bypass it.
 - Verify visually after 3D/layout changes: build, serve `out/`, drive with

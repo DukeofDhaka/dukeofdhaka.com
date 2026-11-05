@@ -24,7 +24,7 @@ export default function SocialRail() {
   ];
 
   return (
-    <div className="fixed bottom-24 left-6 z-40 hidden flex-col gap-7 md:flex">
+    <div className="fixed bottom-24 left-[max(1.5rem,env(safe-area-inset-left))] z-40 hidden flex-col gap-7 md:flex">
       {items.map((it) => (
         <a
           key={it.label}

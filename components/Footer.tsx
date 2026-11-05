@@ -9,7 +9,7 @@ const Globe = dynamic(() => import("@/components/Globe"), { ssr: false });
 
 export default function Footer() {
   return (
-    <footer id="contact" className="relative flex min-h-screen flex-col justify-center overflow-hidden px-6 pb-10 pt-28 sm:px-10">
+    <footer id="contact" className="relative flex min-h-svh flex-col justify-center overflow-hidden px-6 pb-28 pt-28 sm:px-10 md:pb-10">
       {/* Dhaka → Montréal globe, subtle backdrop */}
       <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] opacity-40 lg:block">
         <Globe />

@@ -110,7 +110,7 @@ function Card({ project, i }: { project: Project; i: number }) {
   );
 
   const cls =
-    "group relative flex w-full shrink-0 flex-col rounded-2xl border border-paper/12 bg-ink-soft/60 transition-colors hover:border-accent/50 md:w-[380px] lg:w-[420px]";
+    "group relative flex w-full shrink-0 flex-col rounded-2xl border border-paper/12 bg-ink-soft/60 transition-colors hover:border-accent/50 active:border-accent/50 active:opacity-100 md:w-[380px] lg:w-[420px]";
 
   return project.link ? (
     <a
