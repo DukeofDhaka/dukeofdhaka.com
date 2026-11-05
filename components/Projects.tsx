@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue, type PanInfo } from "framer-motion";
 import Section from "@/components/Section";
 import Magnetic from "@/components/Magnetic";
-import { projects, type Project } from "@/lib/content";
+import { projects, works, type Project } from "@/lib/content";
 
 const GAP = 24;
 
@@ -23,24 +23,23 @@ function useIsDesktop() {
 /** Top of the card: a real figure from the repo, or a typographic stand-in. */
 function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
   return (
-    <figure className="relative h-44 overflow-hidden rounded-t-2xl border-b border-paper/10">
+    <figure className="flex h-44 flex-col overflow-hidden rounded-t-2xl border-b border-paper/10">
       {"src" in exhibit ? (
-        <div className="flex h-full items-center justify-center bg-white p-3">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static export, pre-optimized webp */}
+        <div className="flex min-h-0 flex-1 items-center justify-center bg-white p-3">
+          {/* the figcaption below describes the image, so alt stays empty */}
           <img
             src={exhibit.src}
-            alt={exhibit.caption}
-            loading="lazy"
+            alt=""
             draggable={false}
-            className="max-h-full max-w-full object-contain opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+            className="max-h-full max-w-full object-contain opacity-90 transition-opacity duration-300 group-hover:opacity-100 group-active:opacity-100"
           />
         </div>
       ) : (
-        <div className="flex h-full flex-col justify-center gap-1.5 bg-ink px-7">
+        <div className="flex min-h-0 flex-1 flex-col justify-center gap-1 bg-ink px-7">
           {exhibit.lines.map((line, k) => (
             <span
-              key={line}
-              className={`font-display text-lg font-bold uppercase tracking-tight ${
+              key={k}
+              className={`font-display text-[15px] font-bold uppercase leading-tight tracking-tight sm:text-lg ${
                 k === 0 ? "text-paper" : "text-paper-dim"
               }`}
             >
@@ -49,7 +48,7 @@ function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
           ))}
         </div>
       )}
-      <figcaption className="absolute bottom-2 left-3 rounded bg-ink/85 px-2 py-0.5 text-[10px] uppercase tracking-[0.15em] text-paper-dim">
+      <figcaption className="shrink-0 truncate bg-ink px-3 py-1.5 text-[10px] uppercase tracking-[0.15em] text-paper-dim">
         {exhibit.caption}
       </figcaption>
     </figure>
@@ -58,7 +57,7 @@ function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
 
 /** Metric-first card: evidence on top, the headline number, then the story. */
 function Card({ project, i }: { project: Project; i: number }) {
-  const tag = project.course ?? (project.flagship ? "Flagship" : "");
+  const tag = project.context ?? (project.flagship ? works.flagship : "");
   const body = (
     <>
       <Exhibit exhibit={project.exhibit} />
@@ -100,10 +99,10 @@ function Card({ project, i }: { project: Project; i: number }) {
         <p className="mt-6 text-xs uppercase tracking-[0.2em] text-paper-dim">
           {project.link ? (
             <span className="text-paper transition-colors group-hover:text-accent">
-              View the repo ↗
+              {works.repoLink}
             </span>
           ) : (
-            "No public repo"
+            works.noRepo
           )}
         </p>
       </div>
@@ -178,7 +177,7 @@ export default function Projects() {
   return (
     <Section id="works" index="04 — Works" title="My Work" centered>
       <p className="-mt-8 mb-12 text-center text-sm text-paper-dim">
-        Every number below is quoted from the project&apos;s own README.
+        {works.intro}
       </p>
 
       <div

@@ -13,7 +13,7 @@ export default function Skills() {
         <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">
           05 — Skillset &amp; Tools
         </p>
-        <h2 className="display-huge text-5xl text-paper sm:text-7xl">My Techstack</h2>
+        <h2 className="display-huge text-[2.75rem] text-paper min-[360px]:text-5xl sm:text-7xl">My Techstack</h2>
       </div>
 
       {/* the physics ball pit */}

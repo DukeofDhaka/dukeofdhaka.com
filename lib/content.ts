@@ -76,7 +76,7 @@ export const whatIDo = [
 
 export const about = {
   paragraphs: [
-    "I grew up in Dhaka — a city of twenty million people, infinite traffic, and better food than wherever you're reading this from. At eighteen I landed in Halifax for a finance degree at Saint Mary's, where I managed a real $600K student fund and took second place at the Venture Capital Investment Competition in Boston.",
+    "I grew up in Dhaka — a city of twenty million people, infinite traffic, and better food than wherever you're reading this from. At eighteen I landed in Halifax for a finance degree at Saint Mary's, where I ran the TMT book of a real $600K student fund and took second place at the Venture Capital Investment Competition in Boston.",
     "Then came six years where finance and data kept colliding: fund operations at Citco, then RBC Capital Markets, where I grew from Data Analyst to Senior Data Analyst — building projection models, automating reporting pipelines, and cutting a 13-minute data pipeline down to 2. Somewhere in there I also became a CFA Level 1 candidate.",
     "Now I'm in Montréal doing a Master of Management in Analytics at McGill's Desautels, going deep on the machine-learning side: NLP on financial news, computer vision for Canadian National Railway, and whatever else lets me build things that matter — some of them for Bangladesh.",
   ],
@@ -152,14 +152,25 @@ export type Project = {
   exhibit:
     | { src: string; caption: string }
     | { lines: string[]; caption: string };
-  course?: string;
+  /** small tag top-right of the card: the course, programme or org */
+  context?: string;
   tags: string[];
   /** omit for work with no public repo */
   link?: string;
   flagship?: boolean;
 };
 
-// Every metric below is quoted from the repo's own README — keep it that way.
+// Works section copy (the cards themselves are `projects` below).
+export const works = {
+  intro:
+    "Every number below is quoted from the project's own README — or, where there's no public repo, from my own report.",
+  flagship: "Flagship",
+  repoLink: "View the repo ↗",
+  noRepo: "No public repo",
+};
+
+// Every metric below is quoted from the repo's own README (or, for work with
+// no repo, from Tahsin's own report) — keep it that way.
 export const projects: Project[] = [
   {
     title: "DeshRide",
@@ -179,29 +190,29 @@ export const projects: Project[] = [
     description:
       "Macro, Sector, Risk and Compliance agents bid through a risk-budget auction, with veto controls and a human CIO approver. Governance fails closed: unsafe or ambiguous decisions escalate instead of trading. Tested against prompt injection, stale data, restricted assets, replay, over-budget bids and specialist timeouts.",
     metric: { value: "13/13", label: "adversarial scenarios pass" },
-    course: "MGSC 697 · capstone",
+    context: "MGSC 697 · capstone",
     tags: ["Multi-agent systems", "OpenAI Agents SDK", "Python", "Evals"],
     link: "https://github.com/DukeofDhaka/portfolio-committee-multi-agent-system",
   },
   {
     title: "Walk-Forward Alpha",
-    exhibit: { src: "/works/walk-forward.webp", caption: "Fig. Growth of $1 — Elastic Net vs SPY, 2017–2023" },
+    exhibit: { src: "/works/walk-forward.webp", caption: "Fig. Growth of $1 — Elastic Net vs the SPY excess benchmark" },
     subtitle: "ML models for cross-sectional stock-return prediction",
     description:
-      "Linear, tree-based and neural models compared walk-forward over 84 out-of-sample months (2017–2023), each driving a monthly long-short portfolio. Elastic Net delivered a 14.83% annualized long-short return and 17.41% alpha versus SPY.",
-    metric: { value: "0.948", label: "Sharpe — vs 0.633 for SPY" },
-    course: "FINA 695",
+      "Linear, tree-based and neural models compared walk-forward over 84 out-of-sample months (2017–2023), each driving a monthly long-short portfolio. Elastic Net delivered a 14.83% annualized long-short return and 17.41% alpha relative to SPY excess returns.",
+    metric: { value: "0.948", label: "Sharpe — vs 0.633 for SPY excess" },
+    context: "FINA 695",
     tags: ["Elastic Net", "Gradient boosting", "TensorFlow", "Walk-forward CV"],
     link: "https://github.com/DukeofDhaka/fina695-walk-forward-ml-portfolio",
   },
   {
     title: "Equity Research",
-    exhibit: { lines: ["MAXR  → SELL", "OTEX  → BUY", "DLB · EXPO · MKTX"], caption: "Calls & ideas" },
+    exhibit: { lines: ["MAXR → SELL", "OTEX → BUY", "DLB · EXPO · MKTX"], caption: "Calls & ideas" },
     subtitle: "From a student fund's IC to moat-hunting",
     description:
       "At the $600K Impact Fund I built the Maxar SELL case — DCF (perpetuity and exit multiple) checked against comps — and pitched the OpenText buy; the fund executed both. Lately: three small/mid-cap moats — Dolby's licensing standard, Exponent's reputation, MarketAxess's network effect — valuation and risks included.",
-    metric: { value: "2/2", label: "IC pitches executed by the fund" },
-    course: "Impact Fund · Saint Mary's",
+    metric: { value: "2", label: "IC pitches executed — Maxar & OpenText" },
+    context: "Impact Fund · Saint Mary's",
     tags: ["DCF", "Comparable companies", "Moat analysis", "Bloomberg · FactSet"],
   },
   {
@@ -211,7 +222,7 @@ export const projects: Project[] = [
     description:
       "A 7.6M-parameter residual CNN whose activation and receptive field were picked through a controlled four-way ablation, transferred from CIFAR-10 to CIFAR-100 (72.35%), then opened up with feature maps and Grad-CAM.",
     metric: { value: "93.5%", label: "CIFAR-10 test accuracy" },
-    course: "MGSC 695",
+    context: "MGSC 695",
     tags: ["PyTorch", "Computer vision", "Transfer learning", "Grad-CAM"],
     link: "https://github.com/DukeofDhaka/residual-cnn-vision-explainability",
   },
@@ -222,7 +233,7 @@ export const projects: Project[] = [
     description:
       "Multi-class topic classification on 20 Newsgroups: RoBERTa fine-tuned and calibrated with temperature scaling, benchmarked against TF-IDF + logistic regression, then exported to ONNX with perfect prediction agreement.",
     metric: { value: "77.6%", label: "macro-F1 — vs 71.6% TF-IDF" },
-    course: "MGSC 695",
+    context: "MGSC 695",
     tags: ["RoBERTa", "Transformers", "ONNX", "Calibration"],
     link: "https://github.com/DukeofDhaka/transformer-text-classification-system",
   },
@@ -262,7 +273,7 @@ export const projects: Project[] = [
     description:
       "End-to-end ML predicting whether job candidates will change employers: research notebooks → production package → FastAPI with Pydantic validation → Docker → live on Render with drift monitoring. My contribution hardened the API contract with CI tests.",
     metric: { value: "API", label: "FastAPI · Docker · Render" },
-    course: "INSY 674",
+    context: "INSY 674",
     tags: ["scikit-learn", "FastAPI", "Docker", "CI/CD"],
     link: "https://github.com/DukeofDhaka/INSY-674",
   },
