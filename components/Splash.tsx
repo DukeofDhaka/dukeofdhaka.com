@@ -100,7 +100,7 @@ export default function Splash({
       </div>
 
       <div className="pointer-events-none flex items-end justify-between">
-        <p className="max-w-[240px] text-[11px] leading-relaxed uppercase tracking-[0.15em] text-paper-dim/70">
+        <p className="max-w-[240px] text-[11px] leading-relaxed uppercase tracking-[0.15em] text-paper-dim">
           Soundtrack — {site.music.title} · {site.music.artist}
         </p>
         <span className="display-huge text-6xl text-paper/90 tabular-nums sm:text-8xl">

@@ -188,7 +188,7 @@ export default function SiteShell() {
         aria-hidden={!entered}
       >
         <Panel>
-          <Hero />
+          <Hero ready={entered} />
         </Panel>
         <Panel>
           <Marquee items={hero.marquee} playing={playing} />

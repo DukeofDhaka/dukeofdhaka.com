@@ -21,7 +21,7 @@ function useIsDesktop() {
 }
 
 /** Top of the card: a real figure from the repo, or a typographic stand-in. */
-function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
+function Exhibit({ exhibit, eager }: { exhibit: Project["exhibit"]; eager: boolean }) {
   return (
     <figure className="flex h-44 flex-col overflow-hidden rounded-t-2xl border-b border-paper/10">
       {"src" in exhibit ? (
@@ -30,6 +30,10 @@ function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
           <img
             src={exhibit.src}
             alt=""
+            // desktop carousel: off-track cards are clipped, so lazy loading
+            // would pop them in late; phones stack the cards, so lazy is right
+            loading={eager ? "eager" : "lazy"}
+            decoding="async"
             draggable={false}
             className="max-h-full max-w-full object-contain opacity-90 transition-opacity duration-300 group-hover:opacity-100 group-active:opacity-100"
           />
@@ -56,11 +60,11 @@ function Exhibit({ exhibit }: { exhibit: Project["exhibit"] }) {
 }
 
 /** Metric-first card: evidence on top, the headline number, then the story. */
-function Card({ project, i }: { project: Project; i: number }) {
+function Card({ project, i, eager }: { project: Project; i: number; eager: boolean }) {
   const tag = project.context ?? (project.flagship ? works.flagship : "");
   const body = (
     <>
-      <Exhibit exhibit={project.exhibit} />
+      <Exhibit exhibit={project.exhibit} eager={eager} />
       <div className="flex flex-1 flex-col p-7">
         <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em]">
           <span className="font-display font-bold text-paper-dim">
@@ -218,7 +222,7 @@ export default function Projects() {
           className="flex flex-col items-stretch gap-6 md:cursor-grab md:flex-row md:active:cursor-grabbing"
         >
           {projects.map((p, i) => (
-            <Card key={p.title} project={p} i={i} />
+            <Card key={p.title} project={p} i={i} eager={desktop} />
           ))}
         </motion.div>
       </div>

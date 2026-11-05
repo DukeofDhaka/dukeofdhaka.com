@@ -436,7 +436,8 @@ export default function Figurine({ playing }: { playing: boolean }) {
     >
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
-        dpr={[1, 1.75]}
+        // phones have 3x screens and small GPUs: 1.5x is plenty for the bust
+        dpr={[1, window.innerWidth < 768 ? 1.5 : 1.75]}
         gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
         // Listen for the pointer on the page itself: without an eventSource R3F
         // gives this full-screen canvas `pointer-events: auto`, and it would

@@ -75,6 +75,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${clash.variable} ${geist.variable}`}>
+      <head>
+        {/* the music player's origin — warmed up while the splash loads */}
+        <link rel="preconnect" href="https://www.youtube.com" />
+      </head>
       <body>
         <script
           type="application/ld+json"

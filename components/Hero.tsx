@@ -37,9 +37,11 @@ function FlipWord() {
 }
 
 const btn =
-  "group font-display block rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wide text-paper sm:px-7 sm:py-3.5 sm:text-sm";
+  "group font-display block rounded-full px-5 py-3 text-xs font-bold uppercase tracking-wide sm:px-7 sm:py-3.5 sm:text-sm";
 
-export default function Hero() {
+/** `ready` = the visitor has entered; the entrance animation waits for it
+ *  instead of playing unseen behind the splash. */
+export default function Hero({ ready = true }: { ready?: boolean }) {
   return (
     <header className="relative flex min-h-svh flex-col overflow-hidden px-6 pt-[calc(7rem+env(safe-area-inset-top))] [@media(max-height:700px)]:pt-[calc(6rem+env(safe-area-inset-top))] sm:px-10 md:flex-row md:items-center md:pt-0">
       {/* red glow orbs */}
@@ -61,7 +63,7 @@ export default function Hero() {
         <div className="pointer-events-none md:col-start-1 md:row-start-1 md:self-end">
           <motion.p
             initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
             transition={{ delay: 0.15, duration: 0.6 }}
             className="mb-3 text-sm tracking-[0.15em] text-accent"
           >
@@ -69,7 +71,7 @@ export default function Hero() {
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={ready ? { opacity: 1, y: 0 } : undefined}
             transition={{ delay: 0.3, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
             className="display-huge text-6xl leading-[0.92] text-paper sm:text-7xl"
           >
@@ -81,7 +83,7 @@ export default function Hero() {
 
         <motion.div
           initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={ready ? { opacity: 1, y: 0 } : undefined}
           transition={{ delay: 0.55, duration: 0.7 }}
           className="pointer-events-none md:col-start-3 md:row-span-2 md:row-start-1 md:self-center md:text-right"
         >
@@ -93,12 +95,12 @@ export default function Hero() {
 
         <motion.div
           initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={ready ? { opacity: 1, y: 0 } : undefined}
           transition={{ delay: 0.85, duration: 0.6 }}
           className="pointer-events-auto flex flex-wrap items-center gap-3 sm:gap-4 md:col-start-1 md:row-start-2 md:self-start"
         >
           <Magnetic>
-            <a href="#works" className={`${btn} bg-accent`}>
+            <a href="#works" className={`${btn} bg-accent text-ink`}>
               Selected works ↓
             </a>
           </Magnetic>
@@ -107,7 +109,7 @@ export default function Hero() {
               href={site.github}
               target="_blank"
               rel="noopener noreferrer"
-              className={`${btn} border border-paper/25`}
+              className={`${btn} border border-paper/25 text-paper`}
             >
               <HoverText text="GitHub ↗" />
             </a>
@@ -126,7 +128,7 @@ export default function Hero() {
 
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={ready ? { opacity: 1 } : undefined}
         transition={{ delay: 1.6, duration: 1 }}
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 text-paper-dim md:block"
       >

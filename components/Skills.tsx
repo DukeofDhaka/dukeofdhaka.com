@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { skills } from "@/lib/content";
+import WhenNear from "@/components/WhenNear";
 
 const TechBalls = dynamic(() => import("@/components/TechBalls"), { ssr: false });
 
@@ -16,8 +17,11 @@ export default function Skills() {
         <h2 className="display-huge text-[2.75rem] text-paper min-[360px]:text-5xl sm:text-7xl">My Techstack</h2>
       </div>
 
-      {/* the physics ball pit */}
-      <TechBalls />
+      {/* the physics ball pit — loads matter.js only as you scroll near it;
+          min-height = canvas (440) + caption, so nothing jumps when it mounts */}
+      <WhenNear style={{ minHeight: 468 }}>
+        <TechBalls />
+      </WhenNear>
 
       {/* scannable list underneath */}
       <div className="mx-auto mt-16 grid max-w-6xl gap-x-10 px-6 sm:px-10 md:grid-cols-3">
