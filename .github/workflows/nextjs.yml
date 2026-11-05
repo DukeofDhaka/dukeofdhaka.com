@@ -54,13 +54,12 @@ jobs:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
+        # No `static_site_generator: next` here: that option can't read
+        # next.config.ts, so it writes its own next.config.js (which wins) and
+        # silently drops our settings — trailingSlash among them, which 404'd
+        # every /works/<slug>/ page. next.config.ts already sets output:
+        # "export" and unoptimized images; the site lives at the domain root.
         uses: actions/configure-pages@v5
-        with:
-          # Automatically inject basePath in your Next.js configuration file and disable
-          # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
-          #
-          # You may remove this line if you want to manage the configuration yourself.
-          static_site_generator: next
       - name: Restore cache
         uses: actions/cache@v4
         with:

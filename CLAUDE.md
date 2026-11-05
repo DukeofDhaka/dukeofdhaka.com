@@ -60,7 +60,10 @@ ball pit, and a background soundtrack.
 
 Push to `main` → GitHub Actions (`.github/workflows/nextjs.yml`) builds and
 deploys to GitHub Pages → served at dukeofdhaka.com (CNAME in `public/`).
-**Any push to `main` is a live deploy.** Dev happens locally in this clone
+**Any push to `main` is a live deploy.** The workflow's `configure-pages`
+step deliberately has no `static_site_generator: next` — that option writes
+its own `next.config.js` over `next.config.ts` and drops `trailingSlash`,
+which 404s every `/works/<slug>/` page. Keep it off. Dev happens locally in this clone
 (the original cloud-session branch `claude/dukeofdhaka-portfolio-sk4kou` is
 merged into main and retired) — branch before risky work, push to main only
 to ship.
