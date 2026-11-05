@@ -142,7 +142,33 @@ export const timeline: TimelineEntry[] = [
   },
 ];
 
+/**
+ * The long version of a Works card, shown at /works/<slug>/ and in the
+ * overlay on the home page. Every claim and number is condensed or quoted
+ * from that repo's own README (team projects: its merged pull requests).
+ */
+export type CaseStudy = {
+  /** the question the project sets out to answer */
+  question: string;
+  /** how it works, in order */
+  approach: string[];
+  /** headline numbers, each quoted from the README */
+  results: { value: string; label: string }[];
+  /** the honest bottom line */
+  takeaway?: string;
+  /** team projects: what Tahsin himself built */
+  role?: string;
+  /** named test/eval scenarios, for work with no figures */
+  checks?: string[];
+  /** README figures, copied as WebP into public/works/<slug>/ */
+  figures: { src: string; caption: string }[];
+  /** the README's own stated limits */
+  limits: string[];
+};
+
 export type Project = {
+  /** URL id: /works/<slug>/ */
+  slug: string;
   title: string;
   subtitle: string;
   description: string;
@@ -158,6 +184,8 @@ export type Project = {
   /** omit for work with no public repo */
   link?: string;
   flagship?: boolean;
+  /** omit for work with no public source to expand from */
+  caseStudy?: CaseStudy;
 };
 
 // Works section copy (the cards themselves are `projects` below).
@@ -166,13 +194,32 @@ export const works = {
     "Every number below is quoted from the project's own README — or, where there's no public repo, from my own report.",
   flagship: "Flagship",
   repoLink: "View the repo ↗",
+  caseStudyLink: "Read the case study →",
   noRepo: "No public repo",
+};
+
+// Labels on the case-study pages / overlay (the content is in `projects`).
+export const caseStudyCopy = {
+  kicker: "Case study",
+  question: "The question",
+  approach: "How it works",
+  results: "Results",
+  takeaway: "Bottom line",
+  role: "My part",
+  checks: "What the evals cover",
+  figures: "From the repo",
+  limits: "Known limits",
+  repo: "View the repo ↗",
+  allWork: "← All work",
+  close: "Close",
+  next: "Next case study",
 };
 
 // Every metric below is quoted from the repo's own README (or, for work with
 // no repo, from Tahsin's own report) — keep it that way.
 export const projects: Project[] = [
   {
+    slug: "deshride",
     title: "DeshRide",
     exhibit: { src: "/works/deshride.webp", caption: "The brand, from the repo" },
     subtitle: "সমগ্র বাংলাদেশ — intercity carpooling for Bangladesh",
@@ -182,8 +229,30 @@ export const projects: Project[] = [
     tags: ["TypeScript", "Vite", "Capacitor", "Escrow payments", "GitHub Actions"],
     link: "https://github.com/DukeofDhaka/deshride-app",
     flagship: true,
+    caseStudy: {
+      question:
+        "Can intercity carpooling work in Bangladesh — drivers selling the seats on trips they're already making — with payments both sides can trust?",
+      approach: [
+        "One app, both roles: a driver posts a trip with any pickup and drop-off in the country — all 64 districts, or a pin dropped straight on the map.",
+        "Travellers request the empty seats; the driver approves who rides.",
+        "The fare is collected via bKash, Nagad or card when the driver accepts, held, and released to the driver only after the trip completes — the pattern Bangladesh Bank's Digital Commerce rules already mandate.",
+        "A local-first prototype: the whole loop — post → search → request → accept into escrow → complete → release — works end to end, with one storage module as the seam for a future backend.",
+        "The same codebase ships as an Android app through Capacitor; CI builds a debug APK on every push.",
+        "Launch research to match: regulation (BRTA, company setup, VAT, PDPO 2025), market and unit economics, Play Store and payment rails, and a go/no-go verdict with a phased roadmap.",
+      ],
+      results: [
+        { value: "64", label: "districts — any pickup, any drop-off" },
+        { value: "3", label: "payment rails: bKash, Nagad, card" },
+        { value: "5", label: "feasibility reports, regulation to payments design" },
+      ],
+      figures: [],
+      limits: [
+        "Still a local-first prototype: trips and bookings live on the device until a backend replaces the storage seam.",
+      ],
+    },
   },
   {
+    slug: "portfolio-committee",
     title: "Portfolio Committee",
     exhibit: { src: "/works/committee.webp", caption: "Fig. Coordination outcomes by scenario" },
     subtitle: "A governed multi-agent investment committee",
@@ -193,8 +262,37 @@ export const projects: Project[] = [
     context: "MGSC 697 · capstone",
     tags: ["Multi-agent systems", "OpenAI Agents SDK", "Python", "Evals"],
     link: "https://github.com/DukeofDhaka/portfolio-committee-multi-agent-system",
+    caseStudy: {
+      question:
+        "Does a multi-agent committee add enough governance value over one generalist advisor to justify the added coordination complexity?",
+      approach: [
+        "Macro and Sector agents write independent views to separate, role-scoped state — fan-out, then a stable gather.",
+        "Their bids compete in a contract-net auction for a scarce, deterministic risk budget; unsupported, over-budget, restricted or concentrated bids are rejected.",
+        "Risk and Compliance act as independent veto gates — concentration, turnover, cash floor and drawdown on one side; restricted assets, stale data and instruction attacks on the other.",
+        "Risk may ask for exactly one diversified Sector revision: recovery without an unbounded self-correction loop.",
+        "Hard breaches, a missing specialist or ambiguity go to a human CIO as a structured approval ticket. Every message carries a typed header with trace and correlation IDs.",
+      ],
+      results: [
+        { value: "13/13", label: "deterministic scenarios pass" },
+        { value: "8", label: "evaluated cases routed to CIO review" },
+        { value: "1", label: "bounded revision allowed — never a loop" },
+      ],
+      takeaway:
+        "Yes for shadow decision support, no for autonomous deployment. The committee can propose weights, run the auction, reject unsafe bids and draft CIO tickets — but it cannot trade or rebalance an account.",
+      figures: [
+        {
+          src: "/works/portfolio-committee/coordination-outcomes.webp",
+          caption: "Coordination outcomes across the deterministic evaluation suite",
+        },
+      ],
+      limits: [
+        "The portfolio, market conditions and scenarios are synthetic — built to demonstrate system design.",
+        "Shadow-only authority: the prototype cannot trade, rebalance an account, or approve autonomous deployment.",
+      ],
+    },
   },
   {
+    slug: "walk-forward-alpha",
     title: "Walk-Forward Alpha",
     exhibit: { src: "/works/walk-forward.webp", caption: "Fig. Growth of $1 — Elastic Net vs the SPY excess benchmark" },
     subtitle: "ML models for cross-sectional stock-return prediction",
@@ -204,8 +302,38 @@ export const projects: Project[] = [
     context: "FINA 695",
     tags: ["Elastic Net", "Gradient boosting", "TensorFlow", "Walk-forward CV"],
     link: "https://github.com/DukeofDhaka/fina695-walk-forward-ml-portfolio",
+    caseStudy: {
+      question:
+        "Which model family — linear, tree-based or neural — best predicts the cross-section of stock returns, judged by the long-short portfolio it builds?",
+      approach: [
+        "147 firm characteristics, median-imputed and rank-scaled across stocks every month.",
+        "Six model families: Lasso, Ridge, Elastic Net, Random Forest, gradient-boosted trees and a two-hidden-layer neural network.",
+        "Walk-forward: each test year trains on an expanding window, validates on the two years before it, then tests on the untouched year — 84 out-of-sample months, January 2017 to December 2023.",
+        "Predictions drive monthly value-weighted long-short portfolios with at least 50 names per side.",
+        "Scored against a zero-return OOS R² benchmark and SPY excess returns; the repo's tests recompute the headline metrics from the saved monthly series.",
+      ],
+      results: [
+        { value: "0.948", label: "Elastic Net Sharpe — vs 0.633 for SPY excess" },
+        { value: "14.83%", label: "annualized long-short return" },
+        { value: "17.41%", label: "annualized alpha vs SPY excess returns" },
+        { value: "−22.37%", label: "max drawdown — vs −25.22% for SPY excess" },
+        { value: "0.733%", label: "best OOS R² (Lasso), 42,342 predictions" },
+      ],
+      figures: [
+        {
+          src: "/works/walk-forward-alpha/cumulative-returns.webp",
+          caption: "Growth of $1 — Elastic Net vs the SPY excess benchmark, 2017–2023",
+        },
+      ],
+      limits: [
+        "Elastic Net is highlighted after the fact for having the best Sharpe — a descriptive choice with selection bias, not a second untouched test.",
+        "Historical academic data: no live trading, market impact or borrow constraints.",
+        "Alpha is the intercept of a single-factor regression on SPY excess returns — not a causal estimate.",
+      ],
+    },
   },
   {
+    slug: "equity-research",
     title: "Equity Research",
     exhibit: { lines: ["MAXR → SELL", "OTEX → BUY", "DLB · EXPO · MKTX"], caption: "Calls & ideas" },
     subtitle: "From a student fund's IC to moat-hunting",
@@ -216,6 +344,7 @@ export const projects: Project[] = [
     tags: ["DCF", "Comparable companies", "Moat analysis", "Bloomberg · FactSet"],
   },
   {
+    slug: "residual-cnn",
     title: "Residual CNN + Grad-CAM",
     exhibit: { src: "/works/gradcam.webp", caption: "Fig. Grad-CAM — where the network looks" },
     subtitle: "A custom vision model, and proof of what it learned",
@@ -225,8 +354,39 @@ export const projects: Project[] = [
     context: "MGSC 695",
     tags: ["PyTorch", "Computer vision", "Transfer learning", "Grad-CAM"],
     link: "https://github.com/DukeofDhaka/residual-cnn-vision-explainability",
+    caseStudy: {
+      question:
+        "Can a purpose-built residual network learn strong features from tiny 32×32 CIFAR-10 images — and give CIFAR-100's 100 finer classes a useful warm start?",
+      approach: [
+        "Crop, flip, colour-jitter and random-erasing augmentation, normalized with CIFAR-10 channel statistics.",
+        "A controlled ablation: two activations × two kernel sizes on the same 9,000-image subset for 15 epochs. SiLU with 5×5 kernels won, at 70.66% validation accuracy.",
+        "The selected 7.6M-parameter network — six residual blocks over three stages — trained on CIFAR-10 for 100 epochs.",
+        "For CIFAR-100: a new head, five warm-up epochs, then 60 epochs of fine-tuning.",
+        "Then opened up: confusion patterns, confidence and calibration, feature maps and Grad-CAM.",
+      ],
+      results: [
+        { value: "93.50%", label: "CIFAR-10 test accuracy" },
+        { value: "72.35%", label: "CIFAR-100 test accuracy after transfer" },
+        { value: "7.6M", label: "parameters" },
+        { value: "0.0638", label: "CIFAR-10 expected calibration error" },
+      ],
+      takeaway:
+        "Visually similar animals stay hardest — 14.40% error on cats, 10.30% on birds, 10.10% on dogs — and correct predictions are more confident than wrong ones: 89.0% vs 60.5% mean confidence.",
+      figures: [
+        { src: "/works/residual-cnn/ablation.webp", caption: "Four-way architecture ablation" },
+        { src: "/works/residual-cnn/training-curves.webp", caption: "CIFAR-10 and CIFAR-100 training curves" },
+        { src: "/works/residual-cnn/gradcam.webp", caption: "CIFAR-10 Grad-CAM examples" },
+        { src: "/works/residual-cnn/misclassifications.webp", caption: "Most confident CIFAR-10 errors" },
+      ],
+      limits: [
+        "One seeded, course-scale run — it doesn't measure run-to-run uncertainty.",
+        "Grad-CAM is diagnostic evidence, not proof of the model's reasoning.",
+        "An honest student-scale benchmark, not a state-of-the-art claim.",
+      ],
+    },
   },
   {
+    slug: "transformer-classifier",
     title: "Transformer Topic Classifier",
     exhibit: { src: "/works/confusion.webp", caption: "Fig. Normalized confusion matrix" },
     subtitle: "Fine-tuned RoBERTa vs a classic baseline",
@@ -236,8 +396,38 @@ export const projects: Project[] = [
     context: "MGSC 695",
     tags: ["RoBERTa", "Transformers", "ONNX", "Calibration"],
     link: "https://github.com/DukeofDhaka/transformer-text-classification-system",
+    caseStudy: {
+      question:
+        "Twenty newsgroup topics that share vocabulary — religion, politics, computer hardware, recreation. How far does a fine-tuned transformer beat a classic baseline, and can its confidence be trusted?",
+      approach: [
+        "Light cleaning, stratified train/validation/test splits, tokenization and training-only synonym augmentation.",
+        "Encoder and classification-head experiments, then full RoBERTa fine-tuning.",
+        "A TF-IDF + logistic regression baseline on the same held-out split.",
+        "Class-level error analysis, attention diagnostics and local explanations; temperature scaling with reliability diagrams.",
+        "PyTorch → ONNX export checked for prediction agreement and latency, then cross-domain tests on AG News.",
+      ],
+      results: [
+        { value: "77.60%", label: "macro-F1 — vs 71.59% for TF-IDF" },
+        { value: "78.58%", label: "held-out accuracy" },
+        { value: "0.0912 → 0.0720", label: "calibration error after temperature scaling" },
+        { value: "1.000", label: "PyTorch / ONNX prediction agreement" },
+        { value: "85.67%", label: "AG News macro-F1, frozen encoder" },
+      ],
+      takeaway:
+        "ONNX is portable and prediction-equivalent — not faster. It measured 19.20 ms per example against 17.41 ms for PyTorch, so no speed-up is claimed.",
+      figures: [
+        { src: "/works/transformer-classifier/confusion-matrix.webp", caption: "Normalized held-out confusion matrix" },
+        { src: "/works/transformer-classifier/calibration-before.webp", caption: "Calibration before temperature scaling" },
+        { src: "/works/transformer-classifier/calibration-after.webp", caption: "Calibration after temperature scaling" },
+      ],
+      limits: [
+        "20 Newsgroups is an older benchmark; it doesn't establish robustness on today's language or other domains.",
+        "Full GPU training wasn't rerun for the portfolio — the values come from the saved notebook outputs.",
+      ],
+    },
   },
   {
+    slug: "rail-vision",
     title: "Rail Vision × CN",
     exhibit: { lines: ["live video", "→ real-time inference", "→ defect & wildfire flags"], caption: "Pipeline" },
     subtitle: "Real-time computer vision for Canadian National Railway",
@@ -247,6 +437,7 @@ export const projects: Project[] = [
     tags: ["Computer vision", "Python", "Real-time inference"],
   },
   {
+    slug: "cafe-inventory-rl",
     title: "Café Inventory RL",
     exhibit: { src: "/works/cafe-rl.webp", caption: "Fig. Mean profit per 28-day episode" },
     subtitle: "Should a DQN run the kitchen? An honest audit",
@@ -255,8 +446,37 @@ export const projects: Project[] = [
     metric: { value: "95.2%", label: "service level — vs 92.0% heuristic" },
     tags: ["DQN", "PPO", "Gymnasium", "Decision science"],
     link: "https://github.com/DukeofDhaka/campus-cafe-inventory-rl",
+    caseStudy: {
+      question:
+        "Does added model complexity improve a campus café's daily fresh-meal order enough to justify the operational risk?",
+      approach: [
+        "An auditable MDP: 28 daily decisions per episode — order 0, 4, 8 or 12 meals — with stochastic demand, overnight spoilage and shifting demand regimes.",
+        "Reward is sales minus purchasing, holding, spoilage, lost-demand and overflow costs.",
+        "A business-rule heuristic against tabular Q-learning, DQN and PPO, each trained for 100,000 steps on three seeds.",
+        "Every policy faces the same 200 seeds in six scenarios — normal, demand spike, demand collapse, forecast noise, supplier disruption, spoilage shock — with paired 95% bootstrap intervals.",
+        "A sales-only Q-agent as the reward-hacking control: it learns its proxy and lowers true profit from $782 to $749.",
+      ],
+      results: [
+        { value: "95.2%", label: "DQN service level — vs 92.0% heuristic" },
+        { value: "+$3.73", label: "DQN profit edge, 95% CI −$17.51 to +$25.03" },
+        { value: "+$88.64", label: "DQN edge in a demand spike" },
+        { value: "−$50.15", label: "DQN edge in a demand collapse" },
+      ],
+      takeaway:
+        "Keep the heuristic live and shadow the DQN for four weeks — don't deploy it autonomously. It's non-inferior, not proven superior: it wastes more (8.9% vs 5.9%) and has a worse lower tail.",
+      figures: [
+        { src: "/works/cafe-inventory-rl/policy-comparison.webp", caption: "Policy comparison across profit, service, waste, and downside" },
+        { src: "/works/cafe-inventory-rl/stress-tests.webp", caption: "Stress tests — profit vs the heuristic over 200 paired seeds per scenario" },
+        { src: "/works/cafe-inventory-rl/reward-hacking.webp", caption: "Optimizing sales alone hides the cost of the behavior it creates" },
+      ],
+      limits: [
+        "Demand is synthetic, and the simulator leaves out menu substitution, variable lead times, staffing and promotions.",
+        "Confidence intervals measure simulator uncertainty, not causal real-world impact.",
+      ],
+    },
   },
   {
+    slug: "course-advisor-agent",
     title: "Course Advisor Agent",
     exhibit: { lines: ["request → agent plan", "→ guardrail re-audits", "→ approved or blocked"], caption: "Control flow" },
     subtitle: "An AI agent that can't break the rules",
@@ -265,17 +485,72 @@ export const projects: Project[] = [
     metric: { value: "8/8", label: "offline evals pass" },
     tags: ["OpenAI Agents SDK", "Guardrails", "Pydantic", "pytest"],
     link: "https://github.com/DukeofDhaka/mcgill-course-advisor-agent",
+    caseStudy: {
+      question:
+        "Can an AI course-planning agent explain trade-offs freely while never being trusted on the rules?",
+      approach: [
+        "One bounded OpenAI Agents SDK agent with four typed tools: search courses, check prerequisites, evaluate the plan, draft an advisor-approval request.",
+        "Its answer is a Pydantic-validated recommendation, not free prose.",
+        "Deterministic code recomputes prerequisites, term availability, credit load, duplicate enrollment, capstone eligibility and approval needs.",
+        "A named guardrail re-audits the trusted request and blocks altered risks, wrong approval flags, corrupted drafts and blocked-course picks.",
+        "No tool registers for a course, sends a message or changes an external system.",
+      ],
+      results: [
+        { value: "8/8", label: "offline behavior evals pass" },
+        { value: "4", label: "typed tools" },
+        { value: "0", label: "side effects — nothing registers or sends" },
+      ],
+      takeaway:
+        "Model proposes, policy disposes: the model can explain trade-offs, but deterministic code has the final word on every recommendation.",
+      checks: [
+        "Clean Winter plan",
+        "ML path after prerequisites",
+        "Missing SQL prerequisite",
+        "Credit overload",
+        "Capstone too early",
+        "Unknown course",
+        "Prompt-injection attempt",
+        "Approval override conflict",
+      ],
+      figures: [],
+      limits: [
+        "Every catalog entry, student profile and rule is a simplified synthetic fixture — not real McGill policy or data.",
+        "A coursework prototype, not a production advising system.",
+      ],
+    },
   },
   {
+    slug: "ml-in-production",
     title: "ML in Production",
     exhibit: { lines: ["notebook → package", "→ FastAPI → Docker", "→ Render + drift watch"], caption: "Pipeline" },
     subtitle: "From notebook to deployed API",
     description:
-      "End-to-end ML predicting whether job candidates will change employers: research notebooks → production package → FastAPI with Pydantic validation → Docker → live on Render with drift monitoring. My contribution hardened the API contract with CI tests.",
+      "End-to-end ML predicting whether job candidates are likely to look for a new job: research notebooks → production package → FastAPI with Pydantic validation → Docker → live on Render. My part of the team build: strict input validation, model-health metadata and the data-drift monitoring endpoint.",
     metric: { value: "API", label: "FastAPI · Docker · Render" },
     context: "INSY 674",
     tags: ["scikit-learn", "FastAPI", "Docker", "CI/CD"],
     link: "https://github.com/DukeofDhaka/INSY-674",
+    caseStudy: {
+      question:
+        "What does it take to get a model out of a notebook and into a live, validated, monitored API?",
+      role:
+        "A team project. My merged pull requests: strict input validation (unknown fields and out-of-range values rejected), a clean 503 when the model artifact is missing, model metadata on the health endpoint for traceability, and the data-drift monitoring endpoint with its training baselines.",
+      approach: [
+        "Research notebooks → a versioned Python package with central config and reusable training and prediction modules.",
+        "FastAPI endpoints for health and batch prediction, with Pydantic validation schemas and Loguru logging.",
+        "A drift endpoint that compares each incoming batch with the training baseline using PSI — warn at 0.1, alert at 0.25.",
+        "Docker image, Render blueprint deployment and a GitHub Actions CI pipeline.",
+      ],
+      results: [
+        { value: "5", label: "phases, research to production" },
+        { value: "4", label: "API endpoints, incl. drift monitoring" },
+        { value: "0.1 / 0.25", label: "PSI drift warn / alert thresholds" },
+      ],
+      figures: [],
+      limits: [
+        "It runs on Render's free tier, which sleeps when idle — the first request can take 30–60 seconds.",
+      ],
+    },
   },
 ];
 

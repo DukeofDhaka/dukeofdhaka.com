@@ -12,6 +12,7 @@ import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar";
 import SocialRail from "@/components/SocialRail";
 import EmailDialog from "@/components/EmailDialog";
+import CaseStudyOverlay from "@/components/CaseStudyOverlay";
 
 const Figurine = dynamic(() => import("@/components/Figurine"), { ssr: false });
 import Marquee from "@/components/Marquee";
@@ -156,6 +157,15 @@ export default function SiteShell() {
     (withSound: boolean) => {
       setEntered(true);
       if (withSound) startMusic();
+      // arriving from a case study's "All work" link (/#works): go there once
+      // the splash has lifted and smooth scrolling is running
+      const target = document.getElementById(window.location.hash.slice(1));
+      if (target) {
+        setTimeout(() => {
+          if (window.__lenis) window.__lenis.scrollTo(`#${target.id}`, { immediate: true });
+          else target.scrollIntoView();
+        }, 900);
+      }
     },
     [startMusic]
   );
@@ -217,6 +227,7 @@ export default function SiteShell() {
 
       {entered && <MusicChip playing={playing} onToggle={toggleMusic} />}
       <EmailDialog />
+      <CaseStudyOverlay />
     </>
   );
 }

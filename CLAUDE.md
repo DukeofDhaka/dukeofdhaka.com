@@ -105,6 +105,17 @@ to ship.
   Equity Research card (Impact Fund pitches + 2026 moat ideas) has no repo;
   its facts come from Tahsin's own report and application materials — don't
   name employers or applications on the site.
+- **Case studies**: each Works card with a public repo has a `caseStudy`
+  (in `content.ts`) and a `slug`. It's rendered by `components/CaseStudy.tsx`
+  in two places: the static page `app/works/[slug]/page.tsx` (shared links,
+  search engines; no splash/3D/music) and `CaseStudyOverlay.tsx` on the home
+  page (a card click opens it and `pushState`s to `/works/<slug>/`, so the
+  music and figurine keep going; Back closes it, "Next" uses `replaceState`).
+  **Same truth rule as the cards:** every line comes from that repo's README
+  (for the team project INSY-674, "My part" lists Tahsin's merged PRs).
+  Figures are WebP copies of README figures in `public/works/<slug>/`.
+  Equity Research and Rail Vision have no public source, so they stay
+  card-only. New case-study pages also go in `public/sitemap.xml`.
 - `mcgill-showcases` on GitHub is a fork of someone else's tutorial repo —
   never present it as Tahsin's work.
 - Career timeline is real (from résumés); keep it truthful when editing.

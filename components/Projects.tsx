@@ -5,6 +5,7 @@ import { animate, motion, useMotionValue, type PanInfo } from "framer-motion";
 import Section from "@/components/Section";
 import Magnetic from "@/components/Magnetic";
 import { projects, works, type Project } from "@/lib/content";
+import { caseStudyPath, openCaseStudy } from "@/lib/caseStudy";
 
 const GAP = 24;
 
@@ -101,7 +102,11 @@ function Card({ project, i, eager }: { project: Project; i: number; eager: boole
           ))}
         </div>
         <p className="mt-6 text-xs uppercase tracking-[0.2em] text-paper-dim">
-          {project.link ? (
+          {project.caseStudy ? (
+            <span className="text-paper transition-colors group-hover:text-accent">
+              {works.caseStudyLink}
+            </span>
+          ) : project.link ? (
             <span className="text-paper transition-colors group-hover:text-accent">
               {works.repoLink}
             </span>
@@ -115,6 +120,25 @@ function Card({ project, i, eager }: { project: Project; i: number; eager: boole
 
   const cls =
     "group relative flex w-full shrink-0 flex-col rounded-2xl border border-paper/12 bg-ink-soft/60 transition-colors hover:border-accent/50 active:border-accent/50 active:opacity-100 md:w-[380px] lg:w-[420px]";
+
+  if (project.caseStudy) {
+    // opens the overlay on a plain click; cmd/ctrl-click or a new tab gets
+    // the standalone /works/<slug>/ page
+    return (
+      <a
+        href={caseStudyPath(project.slug)}
+        draggable={false}
+        onClick={(e) => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+          e.preventDefault();
+          openCaseStudy(project.slug);
+        }}
+        className={cls}
+      >
+        {body}
+      </a>
+    );
+  }
 
   return project.link ? (
     <a
@@ -222,7 +246,7 @@ export default function Projects() {
           className="flex flex-col items-stretch gap-6 md:cursor-grab md:flex-row md:active:cursor-grabbing"
         >
           {projects.map((p, i) => (
-            <Card key={p.title} project={p} i={i} eager={desktop} />
+            <Card key={p.slug} project={p} i={i} eager={desktop} />
           ))}
         </motion.div>
       </div>
